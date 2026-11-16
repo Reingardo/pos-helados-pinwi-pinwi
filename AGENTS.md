@@ -1,5 +1,38 @@
 # POS de Helados Pinwi Pinwi
 
+## Leer primero al retomar otra sesión
+
+**Contexto guardado el 16 de noviembre de 2026. El usuario continuará en otra sesión.** Este es el proyecto de escritorio del POS; su repositorio es independiente de la web de la heladería.
+
+- **GitHub público:** https://github.com/Reingardo/pos-helados-pinwi-pinwi
+- Rama de continuidad: `main`; remoto local: `origin`. El proyecto ahora tiene su propio `.git`; no trabajar ni commitear sobre el repositorio padre de otras carpetas.
+- Leer también `CONTINUAR-MANANA.md` para el mapa del código, instrucciones de reproducción y secuencia de decisiones; `ESTADO-PRUEBAS-GASTOS.md` detalla las verificaciones y el bloqueo de Windows.
+- El usuario pidió conservar los datos del negocio: nombre, teléfono, Facebook, catálogo, precios, logo e imágenes. **No subir cuentas, contraseñas, bases, respaldos ni ventas/cortes/gastos de prueba u operación.** Una instalación nueva crea al administrador sin credenciales predeterminadas y comienza sin ventas. Las pruebas crean sus propios datos ficticios en carpetas temporales; no son datos precargados del negocio.
+- Los binarios, dependencias descargadas, capturas y datos locales no están versionados. El clon contiene todo el código y los recursos necesarios para reconstruir el POS. No borrar bases locales del usuario como parte de limpiar Git.
+
+### Estado real del código al cerrar esta sesión
+
+El código actual incluye catálogo de 76 productos, imágenes locales e individuales, inicio por tipos de producto, carrito con imagen a la izquierda y cantidades editables, mayoreo automático, cobro con sugerencias y cambio, tickets con logo y contactos, ventas sin bloqueo de existencias, nombre del usuario en ventas, recuperación del carrito, respaldos automáticos, cortes históricos y registro de gastos.
+
+**Los últimos cambios son:** navegación «Inicio» / «Volver a inicio»; botón «Registrar gastos» junto a abrir/cerrar caja; formulario de gasto con concepto, importe, proveedor/persona y origen; reporte diario con ventas menos gastos y detalle de conceptos; CSV separado de gastos. Un gasto de caja reduce el efectivo esperado; uno externo no lo reduce. Ambos se restan del resultado de ventas menos gastos. La base está en **versión 4**, con respaldo antes de migrar.
+
+La compilación y las pruebas de lógica llegaron a pasar con datos aislados, incluido **$5,000 − $1,300 = $3,700**, gastos externos, idempotencia, CSV y conservación de cortes. **La apertura completa y la revisión visual de la última actualización siguen pendientes**: Smart App Control bloqueó los binarios nuevos por firma (`0x800711C7`). Una repetición normal de pruebas pudo ejecutarse, pero eso no significó autorización permanente; después se volvieron a bloquear la herramienta de vistas y el ejecutable con gastos. No se cambiaron las protecciones del equipo. No hay certificado disponible y el usuario confirmó que no tiene certificado ni cuenta de firma.
+
+La versión local anterior permitida por Windows está en `dist/Actualizacion/PinwiPOS`, sin registrar gastos. La nueva está aparte en `dist/Gastos/PinwiPOS` y en un ZIP identificado como pendiente de firma. Estas carpetas no están en GitHub. El acceso directo del escritorio «Helados Pinwi Pinwi - version verificada» apunta a la anterior. No abrir ambas a la vez ni volver a una versión antigua tras migrar la base.
+
+WhatsApp **no tiene envío desatendido configurado**. Se prepara una nota para el número del negocio; requiere internet y pulsar Enviar. El estado de enviado es confirmación manual, no comprobación remota. Las notas extensas se copian completas para pegarlas. No afirmar que el reporte diario ya se envía automáticamente.
+
+Se agregó `.github/workflows/windows.yml` para compilar, ejecutar pruebas de lógica y generar un paquete Windows x64 sin firma. **Comprobar el resultado más reciente de GitHub Actions al retomar**; no confundir una ejecución iniciada con una aprobada. El paquete de CI tampoco resuelve la firma ni valida la impresora física.
+
+### Próximos pasos
+
+1. Revisar el estado de GitHub Actions y reproducir las pruebas en Windows con SDK .NET 10.
+2. Resolver una vía de firma/distribución admitida por Windows y comprobar la apertura de la actualización sin desactivar seguridad.
+3. Verificar visualmente gastos, cortes, navegación y carrito, y probar la impresión real de 58/80 mm.
+4. Después seguir con roles/cajeros, otros descuentos, devoluciones/cancelaciones, alta de productos, domicilio, reportes avanzados y restauración desde la interfaz. El alcance completo de este archivo todavía no está terminado.
+
+Las decisiones posteriores del usuario y la sección «Ajustes solicitados posteriormente por el usuario» prevalecen sobre los requisitos iniciales que entren en conflicto, especialmente en existencias informativas y envío por WhatsApp.
+
 ## Objetivo y alcance
 
 Construir una aplicación de escritorio moderna, rápida y estable para una heladería y paletería en Windows. Debe funcionar completamente sin internet, con persistencia real en una base de datos local. Entregar una aplicación funcional, no únicamente pantallas o una maqueta.
