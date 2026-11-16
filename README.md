@@ -1,5 +1,3 @@
-> Estado de la actualización de gastos: la compilación y las pruebas de lógica pasaron en una ejecución, pero Windows continúa bloqueando el ejecutable nuevo y la prueba visual por requisitos de firma. No se cambió la seguridad. La versión anterior sigue en dist/Actualizacion y la nueva se conserva aparte en dist/Gastos, pendiente de firma. Consulta ESTADO-PRUEBAS-GASTOS.md.
-
 # Helados Pinwi Pinwi — POS para Windows
 
 Repositorio del POS: https://github.com/Reingardo/pos-helados-pinwi-pinwi
@@ -10,11 +8,13 @@ El repositorio conserva el menú, precios, datos comerciales, logo e imágenes. 
 
 Primera versión funcional en C# / .NET 10, WPF y SQLite. Opera localmente sin conexión. **Todavía no implementa todo el alcance de AGENTS.md.**
 
+La versión actual incluye paquetes, alta y edición de productos con foto, y cobro rápido por gama con imágenes. En Venta se navega con **Productos** y **Cobro rápido**. Las fotos personalizadas se incluyen en los respaldos de SQLite. Consulta AGENTS.md para el estado y las limitaciones actuales. La prioridad es la entrega local; Microsoft Store no está publicado.
+
 ## Ejecutar
 
-Abre `dist/Actualizacion/PinwiPOS/Pinwi.Pos.exe`. El paquete incluye .NET; el equipo del negocio no necesita instalar el SDK ni conectarse a internet.
+En esta computadora, abre `dist/ProductosCobroRapido/PinwiPOS/Pinwi.Pos.exe`. El paquete incluye .NET; el equipo del negocio no necesita instalar el SDK ni conectarse a internet. Cierra cualquier instancia del POS antes de abrir otra.
 
-Para trasladarlo a otra computadora, extrae **todo** `dist/PinwiPOS-Actualizado.zip`. Puedes abrir el ejecutable directamente o ejecutar `Instalar.ps1` para copiarlo a la carpeta de programas del usuario y crear un acceso directo. No muevas solamente el `.exe`.
+Para trasladarlo a otra computadora, utiliza un paquete de la versión actual y extrae **todo** su contenido. El ZIP antiguo `dist/PinwiPOS-Actualizado.zip` no debe usarse con la base migrada. La actualización con gastos sigue identificada como pendiente de firma; su inicio en esta computadora no garantiza autorización en otros equipos. No muevas solamente el `.exe`.
 
 ## Primer uso
 
@@ -22,7 +22,7 @@ Para trasladarlo a otra computadora, extrae **todo** `dist/PinwiPOS-Actualizado.
 2. En **Productos y precios** puedes editar menudeo y mayoreo, con motivo y contraseña. No es necesario registrar existencias: las advertencias rojas son informativas y permiten vender.
 3. Abre **Caja** y registra el fondo inicial.
 4. En **Venta**, busca por sabor o categoría y pulsa productos para agregarlos. Usa «− Una» para reducir la partida seleccionada.
-5. El precio cambia automáticamente a mayoreo desde 10 piezas del mismo producto o $400 valorados a menudeo. Los sabores diferentes no se suman para alcanzar 10.
+5. El precio cambia automáticamente a mayoreo desde 10 piezas del mismo producto o $400 valorados a menudeo. Los sabores diferentes de la misma gama se suman para alcanzar 10, también en cobro normal. En esquimales se cuenta por presentación.
 6. Puedes aplicar un descuento porcentual general autorizado; en esta versión solo afecta partidas a menudeo.
 7. Pulsa **Cobrar** y elige efectivo, tarjeta o mixto. Selecciona un importe sugerido o escribe con cuánto paga el cliente; revisa el cambio antes de confirmar. Los pagos con tarjeta requieren confirmar su autorización en una terminal externa.
 8. Consulta ventas y reimprime desde **Historial y reportes**. El CSV contiene las últimas 1,000 ventas, al igual que esa pantalla.
@@ -84,7 +84,7 @@ Las pruebas verifican 11 escenarios de precios y el flujo de persistencia con ca
 
 El ticket incluye logo local, agradecimiento, Facebook y WhatsApp con iconos. Se puede elegir papel de 58 u 80 mm en la vista previa. El historial y CSV incluyen el usuario real de sesión; por ahora el acceso sigue siendo del administrador existente, no hay cuentas separadas de cajeros. Las ventas anteriores sin nombre muestran «No registrado».
 
-La base migra a versión 3 conservando datos y crea un respaldo previo en la carpeta Respaldos. Cierra la versión anterior antes de abrir la actualizada. La impresión física todavía debe probarse con la impresora real.
+La base actual usa la versión 7, que incluye gastos, paquetes, fotos personalizadas y cobro rápido, conservando datos y creando un respaldo previo en la carpeta Respaldos. Cierra la versión anterior antes de abrir la actualizada. La impresión física todavía debe probarse con la impresora real.
 
 ## Actualización: cortes y autoguardado
 

@@ -18,13 +18,15 @@ public sealed partial class Store
   Directory.CreateDirectory(DirectoryPath);
   using var c=Open();
   var version=Convert.ToInt32(Cmd(c,"PRAGMA user_version").ExecuteScalar());
-  if(version>4)throw new Exception("Esta base requiere una versión más reciente del POS.");
-  if(version is 1 or 2 or 3){var folder=Path.Combine(DirectoryPath,"Respaldos");Directory.CreateDirectory(folder);using var copy=new SqliteConnection(new SqliteConnectionStringBuilder{DataSource=Path.Combine(folder,$"antes-v4-{DateTime.Now:yyyyMMdd-HHmmss-fff}.db")}.ToString());copy.Open();c.BackupDatabase(copy);}
+  if(version>7)throw new Exception("Esta base requiere una versión más reciente del POS.");
+  if(version is >= 1 and < 7){var folder=Path.Combine(DirectoryPath,"Respaldos");Directory.CreateDirectory(folder);using var copy=new SqliteConnection(new SqliteConnectionStringBuilder{DataSource=Path.Combine(folder,$"antes-v7-{DateTime.Now:yyyyMMdd-HHmmss-fff}.db")}.ToString());copy.Open();c.BackupDatabase(copy);}
   Cmd(c,"PRAGMA journal_mode=WAL").ExecuteScalar();
   using var t=c.BeginTransaction();
   Cmd(c,"""
   CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY,name TEXT UNIQUE NOT NULL,salt BLOB NOT NULL,hash BLOB NOT NULL);
   CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY,category TEXT NOT NULL,name TEXT NOT NULL,retail INTEGER NOT NULL CHECK(retail>=0),wholesale INTEGER NOT NULL CHECK(wholesale>=0 AND wholesale<=retail),stock INTEGER NOT NULL CHECK(stock>=0),image TEXT NOT NULL);
+  CREATE TABLE IF NOT EXISTS product_photos(product INTEGER PRIMARY KEY REFERENCES products(id),image BLOB NOT NULL);
+  CREATE TABLE IF NOT EXISTS quick_products(product INTEGER PRIMARY KEY REFERENCES products(id),group_key TEXT NOT NULL UNIQUE,ready INTEGER NOT NULL DEFAULT 1);
   CREATE TABLE IF NOT EXISTS shifts(id INTEGER PRIMARY KEY,opened TEXT NOT NULL,closed TEXT,fund INTEGER NOT NULL,counted INTEGER);
   CREATE UNIQUE INDEX IF NOT EXISTS one_shift ON shifts((1)) WHERE closed IS NULL;
   CREATE TABLE IF NOT EXISTS sales(id INTEGER PRIMARY KEY,token TEXT UNIQUE NOT NULL,date TEXT NOT NULL,shift INTEGER NOT NULL REFERENCES shifts(id),total INTEGER NOT NULL,cash INTEGER NOT NULL,card INTEGER NOT NULL,receipt TEXT NOT NULL);
@@ -41,17 +43,21 @@ public sealed partial class Store
   if(!columns.Contains("cashier"))Cmd(c,"ALTER TABLE sales ADD COLUMN cashier TEXT NOT NULL DEFAULT 'No registrado'").ExecuteNonQuery();
   var reportColumns=new List<string>();using(var reader=Cmd(c,"PRAGMA table_info(cut_reports)").ExecuteReader())while(reader.Read())reportColumns.Add(reader.GetString(1));
   if(!reportColumns.Contains("expenses_csv"))Cmd(c,"ALTER TABLE cut_reports ADD COLUMN expenses_csv TEXT NOT NULL DEFAULT ''").ExecuteNonQuery();
-  Cmd(c,"PRAGMA user_version=4").ExecuteNonQuery();
+  Cmd(c,"PRAGMA user_version=7").ExecuteNonQuery();
   if(Convert.ToInt64(Cmd(c,"SELECT COUNT(*) FROM products").ExecuteScalar())==0)
    foreach(var p in JsonSerializer.Deserialize<List<Product>>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"catalog.json")))!)
     Cmd(c,"INSERT INTO products VALUES(@p0,@p1,@p2,@p3,@p4,0,@p5)",p.Id,p.Category,p.Name,p.Retail,p.Wholesale,p.Image).ExecuteNonQuery();
+  if(version<5)
+   foreach(var p in JsonSerializer.Deserialize<List<Product>>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"packages.json")))!)
+    Cmd(c,"INSERT OR IGNORE INTO products(id,category,name,retail,wholesale,stock,image) VALUES(@p0,@p1,@p2,@p3,@p4,0,@p5)",p.Id,p.Category,p.Name,p.Retail,p.Wholesale,p.Image).ExecuteNonQuery();
+  if(version<7)SeedQuickProducts(c);
   t.Commit();NotifyChanged();
  }
  public bool HasAdmin() { using var c=Open(); return Convert.ToInt64(Cmd(c,"SELECT COUNT(*) FROM users").ExecuteScalar())>0; }
  public void CreateAdmin(string name,string password) { if(name.Trim().Length<2 || password.Length<8) throw new Exception("Usa un nombre y una contraseña de al menos 8 caracteres."); using var c=Open(); using var t=c.BeginTransaction(); if(Convert.ToInt64(Cmd(c,"SELECT COUNT(*) FROM users").ExecuteScalar())>0) throw new Exception("Ya existe administrador."); var salt=RandomNumberGenerator.GetBytes(32); var hash=Rfc2898DeriveBytes.Pbkdf2(password,salt,600000,HashAlgorithmName.SHA256,32); Cmd(c,"INSERT INTO users(name,salt,hash) VALUES(@p0,@p1,@p2)",name.Trim(),salt,hash).ExecuteNonQuery(); t.Commit();NotifyChanged(); }
  public bool Authenticate(string password) { using var c=Open(); using var r=Cmd(c,"SELECT salt,hash FROM users LIMIT 1").ExecuteReader(); return r.Read() && CryptographicOperations.FixedTimeEquals(Rfc2898DeriveBytes.Pbkdf2(password,(byte[])r[0],600000,HashAlgorithmName.SHA256,32),(byte[])r[1]); }
  public bool SignIn(string password){if(!Authenticate(password))return false;using var c=Open();CurrentUserName=(string?)Cmd(c,"SELECT name FROM users ORDER BY id LIMIT 1").ExecuteScalar();return CurrentUserName!=null;}
- public List<Product> Products() { using var c=Open(); using var r=Cmd(c,"SELECT * FROM products ORDER BY id").ExecuteReader(); var list=new List<Product>(); while(r.Read()) list.Add(new(r.GetInt32(0),r.GetString(1),r.GetString(2),r.GetInt64(3),r.GetInt64(4),r.GetInt32(5),r.GetString(6))); return list; }
+ public List<Product> Products() { using var c=Open(); using var r=Cmd(c,"SELECT p.*,q.group_key,COALESCE(q.ready,1) FROM products p LEFT JOIN quick_products q ON q.product=p.id ORDER BY p.id").ExecuteReader(); var list=new List<Product>(); while(r.Read()) list.Add(new(r.GetInt32(0),r.GetString(1),r.GetString(2),r.GetInt64(3),r.GetInt64(4),r.GetInt32(5),r.GetString(6)){QuickGroup=r.IsDBNull(7)?null:r.GetString(7),QuickReady=r.GetInt32(8)==1}); return LoadProductPhotos(list); }
  public void UpdateProduct(int id,long retail,long wholesale,int stock,string reason,string password) { if(!Authenticate(password)) throw new Exception("Contraseña incorrecta."); if(retail<0||wholesale<0||wholesale>retail||stock<0||string.IsNullOrWhiteSpace(reason)) throw new Exception("Revisa precios, existencia y motivo."); using var c=Open(); using var t=c.BeginTransaction(); Cmd(c,"UPDATE products SET retail=@p1,wholesale=@p2,stock=@p3 WHERE id=@p0",id,retail,wholesale,stock).ExecuteNonQuery(); Cmd(c,"INSERT INTO audit(date,action) VALUES(@p0,@p1)",DateTimeOffset.Now.ToString("O"),$"Administrador: producto {id}, existencia {stock}, menudeo {retail}, mayoreo {wholesale}. {reason}").ExecuteNonQuery(); t.Commit();NotifyChanged(); }
  public long? Shift() { using var c=Open(); var v=Cmd(c,"SELECT id FROM shifts WHERE closed IS NULL").ExecuteScalar(); return v is null ? null : Convert.ToInt64(v); }
  public void OpenShift(long fund) { if(fund<0) throw new Exception("Fondo inválido."); using var c=Open(); Cmd(c,"INSERT INTO shifts(opened,fund) VALUES(@p0,@p1)",DateTimeOffset.Now.ToString("O"),fund).ExecuteNonQuery();NotifyChanged(); }
@@ -64,11 +70,11 @@ public sealed partial class Store
   var existing=Cmd(c,"SELECT receipt FROM sales WHERE token=@p0",token).ExecuteScalar(); if(existing is string receipt) return receipt;
   var shift=Cmd(c,"SELECT id FROM shifts WHERE closed IS NULL").ExecuteScalar() ?? throw new Exception("Abre un turno de caja primero.");
   if(items.Count==0) throw new Exception("Agrega productos.");
-  foreach(var item in items) { using var r=Cmd(c,"SELECT retail,wholesale FROM products WHERE id=@p0",item.Product.Id).ExecuteReader(); if(!r.Read()||r.GetInt64(0)!=item.Product.Retail||r.GetInt64(1)!=item.Product.Wholesale) throw new Exception("Los precios cambiaron. Vuelve a crear la venta."); }
+  foreach(var item in items) { using var r=Cmd(c,"SELECT p.retail,p.wholesale,q.group_key,COALESCE(q.ready,1) FROM products p LEFT JOIN quick_products q ON q.product=p.id WHERE p.id=@p0",item.Product.Id).ExecuteReader(); if(!r.Read()||r.GetInt64(0)!=item.Product.Retail||r.GetInt64(1)!=item.Product.Wholesale || (r.IsDBNull(2)?null:r.GetString(2))!=item.Product.QuickGroup || r.GetInt32(3)!=1) throw new Exception("Los precios cambiaron. Vuelve a crear la venta."); }
   var lines=Pricing.Calculate(items,discount); var total=lines.Sum(x=>x.Net);
   if(cashReceived<0||card<0||card>total||cashReceived+card<total) throw new Exception("El pago no cubre el total o la tarjeta excede el total.");
   var shortages=new List<string>();
-  foreach(var l in lines){var stock=Convert.ToInt32(Cmd(c,"SELECT stock FROM products WHERE id=@p0",l.ProductId).ExecuteScalar());if(stock<l.Quantity)shortages.Add(l.Name);if(Cmd(c,"UPDATE products SET stock=MAX(0,stock-@p1) WHERE id=@p0",l.ProductId,l.Quantity).ExecuteNonQuery()!=1)throw new Exception("Producto no disponible en el catálogo.");}
+  foreach(var l in lines){if(Cmd(c,"SELECT 1 FROM quick_products WHERE product=@p0",l.ProductId).ExecuteScalar()!=null)continue;var stock=Convert.ToInt32(Cmd(c,"SELECT stock FROM products WHERE id=@p0",l.ProductId).ExecuteScalar());if(stock<l.Quantity)shortages.Add(l.Name);if(Cmd(c,"UPDATE products SET stock=MAX(0,stock-@p1) WHERE id=@p0",l.ProductId,l.Quantity).ExecuteNonQuery()!=1)throw new Exception("Producto no disponible en el catálogo.");}
   var date=DateTimeOffset.Now.ToString("O");
   Cmd(c,"INSERT INTO sales(token,date,shift,total,cash,card,receipt,cashier) VALUES(@p0,@p1,@p2,@p3,@p4,@p5,'',@p6)",token,date,shift,total,total-card,card,CurrentUserName).ExecuteNonQuery();
   var id=Convert.ToInt64(Cmd(c,"SELECT last_insert_rowid()").ExecuteScalar());

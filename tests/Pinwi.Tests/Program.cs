@@ -23,9 +23,11 @@ if(args.Contains("--render"))
   previewStore.AddExpense(7000,"Compra de vasos","Proveedor de prueba","Caja",Guid.NewGuid().ToString());previewStore.AddExpense(6000,"Pago de apoyo","Personal de prueba","Caja",Guid.NewGuid().ToString());
   var expenseForm=new ExpenseWindow(previewStore);((System.Windows.Controls.TextBox)expenseForm.FindName("AmountInput")).Text="250.00";((System.Windows.Controls.TextBox)expenseForm.FindName("ConceptInput")).Text="Compra de material";((System.Windows.Controls.TextBox)expenseForm.FindName("RecipientInput")).Text="Proveedor";Render(expenseForm,"registrar-gasto.png");
   previewStore.CloseShift(44000);
+  var productForm=new ProductWindow(previewStore,previewStore.Products().First());Render(productForm,"editar-producto.png");
+  var newProductForm=new ProductWindow(previewStore);Render(newProductForm,"nuevo-producto.png");
   var main=new MainWindow(previewStore);var previewFlags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;main.Loaded-=(System.Windows.RoutedEventHandler)Delegate.CreateDelegate(typeof(System.Windows.RoutedEventHandler),main,typeof(MainWindow).GetMethod("LoadedWindow",previewFlags)!);typeof(MainWindow).GetField("ready",previewFlags)!.SetValue(main,true);typeof(MainWindow).GetMethod("Reload",previewFlags)!.Invoke(main,null);
   var previewVm=(SaleViewModel)typeof(MainWindow).GetField("vm",previewFlags)!.GetValue(main)!;previewVm.Cart.AddRange(sampleCart);previewVm.Refresh();
-  Render(main,"venta.png",false);((System.Windows.Controls.DockPanel)main.Content).Children.OfType<System.Windows.Controls.TabControl>().Single().SelectedIndex=2;Render(main,"cortes.png",false);((System.Windows.Controls.TabControl)main.FindName("CashViews")).SelectedIndex=1;Render(main,"gastos-dia.png");
+  Render(main,"venta.png",false);typeof(MainWindow).GetMethod("OpenQuickSales",previewFlags)!.Invoke(main,new object[]{main,new System.Windows.RoutedEventArgs()});previewVm.Cart.Clear();typeof(MainWindow).GetMethod("AddProduct",previewFlags)!.Invoke(main,new object[]{new System.Windows.Controls.Button{Tag=previewStore.Products().Single(p=>p.QuickGroup=="bolis")},new System.Windows.RoutedEventArgs()});previewVm.SetQuantity(previewVm.Cart.Single().Product.Id,10);if(previewVm.TotalCents!=5000)throw new Exception("UI rápida no agrega gama o recalcula mayoreo");Render(main,"cobro-rapido.png",false);previewVm.Cart.Clear();previewVm.Cart.AddRange(sampleCart);previewVm.Refresh();typeof(MainWindow).GetField("activeCategory",previewFlags)!.SetValue(main,"Paquetes");typeof(MainWindow).GetMethod("Filter",previewFlags)!.Invoke(main,null);Render(main,"paquetes.png",false);((System.Windows.Controls.DockPanel)main.Content).Children.OfType<System.Windows.Controls.TabControl>().Single().SelectedIndex=2;Render(main,"cortes.png",false);((System.Windows.Controls.TabControl)main.FindName("CashViews")).SelectedIndex=1;Render(main,"gastos-dia.png");
   Console.WriteLine("Vistas renderizadas en "+output);
  });thread.SetApartmentState(ApartmentState.STA);thread.Start();thread.Join();return;
 }
@@ -46,22 +48,31 @@ var pineapple = lemon with {Id=2,Name="Piña"};
 void Check(string name,long expected,List<CartItem> cart,decimal discount=0,bool stack=false){var result=Pricing.Calculate(cart,discount,stack).Sum(x=>x.Net);if(result!=expected)throw new Exception($"{name}: {result} != {expected}");Console.WriteLine("OK "+name);}
 Check("9 piezas",5400,[new(lemon,9)]);
 Check("10 piezas",5000,[new(lemon,10)]);
-Check("Sabores separados",6000,[new(lemon,5),new(pineapple,5)]);
+Check("Sabores de la misma gama activan mayoreo",5000,[new(lemon,5),new(pineapple,5)]);
 Check("Renglones repetidos",5000,[new(lemon,4),new(lemon,6)]);
 Check("399.99 sin mayoreo",39999,[new(lemon with {Retail=39999,Wholesale=30000},1)]);
 Check("400 activa mayoreo y permanece",30000,[new(lemon with {Retail=40000,Wholesale=30000},1)]);
 Check("Descuento menudeo",4860,[new(lemon,9)],10);
 Check("Mayoreo excluido de descuento",5000,[new(lemon,10)],10);
 Check("Acumulación habilitada",4500,[new(lemon,10)],10,true);
-Check("Carrito mixto",5540,[new(lemon,10),new(pineapple,1)],10);
+Check("Mayoreo en todos los sabores de una gama",5500,[new(lemon,10),new(pineapple,1)],10);
 Check("Redondeo a centavo",91,[new(lemon with{Retail=101,Wholesale=100},1)],10);
 var vm=new SaleViewModel();vm.Cart.Add(new(lemon,1));vm.SetQuantity(1,20);if(vm.TotalCents!=10000)throw new Exception("Edición a mayoreo");vm.SetQuantity(1,9);if(vm.TotalCents!=5400)throw new Exception("Edición a menudeo");vm.SetQuantity(1,0);if(vm.Cart.Count!=0)throw new Exception("Eliminar cantidad cero");
 Console.WriteLine("OK edición directa de cantidades y recálculo");
 Console.WriteLine("11 pruebas de precios aprobadas.");
 var testFolder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiTests",Guid.NewGuid().ToString("N"));
 var store=new Store(testFolder);
-if(store.Products().Count!=76)throw new Exception("Catálogo incompleto");
-if(new Store(testFolder).Products().Count!=76)throw new Exception("Catálogo duplicado");
+if(store.Products().Count!=88)throw new Exception("Catálogo incompleto");
+if(new Store(testFolder).Products().Count!=88)throw new Exception("Catálogo duplicado");
+var packs=store.Products().Where(x=>x.Category=="Paquetes").ToList();
+if(packs.Count!=5 || !packs.Select(x=>x.Retail).SequenceEqual(new long[]{50000,48000,69500,44500,109000}))throw new Exception("Paquetes o precios incorrectos");
+foreach(var pack in packs){Check(pack.Name,pack.Retail,[new(pack,1)]);Check("Diez paquetes",pack.Retail*10,[new(pack,10)]);if(!System.IO.File.Exists(pack.ImagePath))throw new Exception("Falta imagen de paquete");}
+var upgradeFolder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiTests",Guid.NewGuid().ToString("N"));
+var upgradeStore=new Store(upgradeFolder);
+using(var db=new Microsoft.Data.Sqlite.SqliteConnection("Data Source="+upgradeStore.DatabasePath)){db.Open();using var q=db.CreateCommand();q.CommandText="DELETE FROM products WHERE category='Paquetes'; UPDATE products SET retail=777,wholesale=555 WHERE id=1; PRAGMA user_version=4;";q.ExecuteNonQuery();}
+upgradeStore=new Store(upgradeFolder);
+if(upgradeStore.Products().Count!=88 || upgradeStore.Products()[0].Retail!=777 || new Store(upgradeFolder).Products().Count!=88 || !System.IO.Directory.GetFiles(System.IO.Path.Combine(upgradeFolder,"Respaldos"),"antes-v7-*.db").Any())throw new Exception("Migración de paquetes no conserva precios, respaldo o idempotencia");
+Console.WriteLine("OK migración antigua a v7: cinco paquetes y siete gamas, precios previos y respaldo conservados");
 var password=Guid.NewGuid().ToString();
 store.CreateAdmin("Prueba",password);if(!store.SignIn(password))throw new Exception("No inició sesión");
 if(!store.Authenticate(password)||store.Authenticate("incorrecta"))throw new Exception("Autenticación inválida");
@@ -97,10 +108,10 @@ using(var oldDb=new Microsoft.Data.Sqlite.SqliteConnection(new Microsoft.Data.Sq
  oldDb.Open();using var command=oldDb.CreateCommand();command.CommandText="ALTER TABLE sales DROP COLUMN cashier; PRAGMA user_version=1;";command.ExecuteNonQuery();
 }
 var migrated=new Store(migrationFolder);
-if(migrated.Sales().Count!=2||migrated.Sales().Any(x=>x.Cashier!="No registrado")||migrated.Products().Count!=76)throw new Exception("Migración perdió datos o atribuyó un cajero falso");
+if(migrated.Sales().Count!=2||migrated.Sales().Any(x=>x.Cashier!="No registrado")||migrated.Products().Count!=88)throw new Exception("Migración perdió datos o atribuyó un cajero falso");
 if(System.IO.Directory.GetFiles(System.IO.Path.Combine(migrationFolder,"Respaldos"),"*.db").Length!=1)throw new Exception("Migración sin respaldo previo");
 if(new Store(migrationFolder).Sales().Count!=2)throw new Exception("Migración no idempotente");
-Console.WriteLine("OK migración v1 a v3 con respaldo, ventas históricas y usuario no registrado");
+Console.WriteLine("OK migración v1 a v7 con respaldo, ventas históricas y usuario no registrado");
 var draftToken=Guid.NewGuid().ToString();
 store.SaveDraft(new(draftToken,"Prueba",[new(1,7)],10,"Cliente frecuente",DateTimeOffset.Now.ToString("O")));
 var reopened=new Store(testFolder);reopened.SignIn(password);var recovered=reopened.LoadDraft();
@@ -145,3 +156,47 @@ var nextCutId=expenseStore.CloseShift(0);var nextCut=expenseStore.Cuts().First(x
 if(expenseStore.Cuts().First(x=>x.Id==expenseCutId).Summary!=expenseCut.Summary)throw new Exception("Cambió un corte anterior");
 var restoredExpenses=new Store(System.IO.Path.Combine(testFolder,"expenses"));if(restoredExpenses.Expenses(DateTimeOffset.Now).Count!=3||restoredExpenses.Cuts().Count!=2)throw new Exception("No conservó gastos y cortes");
 Console.WriteLine("OK gastos: 5000 - 1300 = 3700, conceptos, caja vs externos, idempotencia, validaciones, CSV y cortes inmutables");
+
+var catalogFolder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiTests",Guid.NewGuid().ToString("N"));
+var catalogStore=new Store(catalogFolder);var catalogPassword=Guid.NewGuid().ToString();catalogStore.CreateAdmin("Catálogo",catalogPassword);catalogStore.SignIn(catalogPassword);
+var photoBytes=Store.PrepareProductImage(System.IO.Path.Combine(AppContext.BaseDirectory,"Assets","Packages","77.png"));
+var newId=catalogStore.SaveProduct(null,"Especiales","Producto de prueba",2500,2200,"Alta",catalogPassword,photoBytes);
+var created=catalogStore.Products().Single(p=>p.Id==newId);
+if(created.Stock!=0||created.Retail!=2500||created.Category!="Especiales"||!System.IO.File.Exists(created.ImagePath))throw new Exception("Alta de producto o imagen incorrecta");
+var duplicateRejected=false;try{catalogStore.SaveProduct(null,"Especiales","Producto de prueba",2500,2200,"Alta",catalogPassword);}catch{duplicateRejected=true;}if(!duplicateRejected)throw new Exception("Permitió duplicar producto");
+var unauthorizedRejected=false;try{catalogStore.SaveProduct(newId,"Especiales","Sin permiso",1,1,"Cambio","incorrecta");}catch{unauthorizedRejected=true;}if(!unauthorizedRejected)throw new Exception("Edición sin autorización");
+catalogStore.UpdateProduct(newId,2500,2200,7,"Existencias",catalogPassword);
+catalogStore.SaveProduct(newId,"Nueva categoría","Producto editado",3000,2600,"Edición",catalogPassword);
+var reopenedCatalog=new Store(catalogFolder);var edited=reopenedCatalog.Products().Single(p=>p.Id==newId);
+if(edited.Stock!=7||edited.Retail!=3000||edited.Name!="Producto editado"||!System.IO.File.ReadAllBytes(edited.ImagePath).SequenceEqual(photoBytes))throw new Exception("Edición perdió datos o foto");
+var restoredFolder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiTests",Guid.NewGuid().ToString("N"));System.IO.Directory.CreateDirectory(restoredFolder);catalogStore.Backup(System.IO.Path.Combine(restoredFolder,"pinwi.db"));
+var restored=new Store(restoredFolder).Products().Single(p=>p.Id==newId);
+if(!restored.ImagePath.StartsWith(restoredFolder)||!System.IO.File.ReadAllBytes(restored.ImagePath).SequenceEqual(photoBytes))throw new Exception("El respaldo no recupera la imagen de forma independiente");
+Check("Cobro de producto nuevo",3000,[new(restored,1)]);
+Console.WriteLine("OK alta, edición, autorización, duplicados, existencias conservadas, persistencia y foto restaurada desde respaldo independiente");
+
+var quickFolder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiTests",Guid.NewGuid().ToString("N"));var quickStore=new Store(quickFolder);var quickPassword=Guid.NewGuid().ToString();quickStore.CreateAdmin("Caja rápida",quickPassword);quickStore.SignIn(quickPassword);
+var quickProducts=quickStore.Products().Where(p=>p.IsQuick).ToList();
+if(quickProducts.Count!=7||quickProducts.Any(p=>p.Name.Contains("Esquimal")||!p.QuickReady))throw new Exception("Gamas rápidas incorrectas");
+var quickBolis=quickProducts.Single(p=>p.QuickGroup=="bolis");var quickPaletas=quickProducts.Single(p=>p.QuickGroup=="categoria:Paletas de agua");
+Check("Rápido: nueve bolis",5400,[new(quickBolis,9)]);
+Check("Rápido: diez bolis",5000,[new(quickBolis,10)]);
+Check("Gamas diferentes no suman diez",12000,[new(quickBolis,5),new(quickPaletas,5)]);
+Check("Normal: agua y leche de la misma gama",5000,[new(lemon,5),new(lemon with{Id=9,Category="Pinwis de leche",Name="Coco"},5)]);
+Check("Carrito mixto con descuento elegible",13100,[new(quickBolis,10),new(quickPaletas,5)],10);
+Check("Normal y rápido suman la misma gama",5000,[new(lemon,5),new(quickBolis,5)]);
+Check("Esquimales distintos conservan su presentación",24500,[new(new Product(73,"Esquimales","Grande",2200,2000,0,""),5),new(new Product(76,"Esquimales","Nuez",2700,2500,0,""),5)]);
+quickStore.UpdateProduct(1,600,500,20,"Existencias para comprobación",quickPassword);quickStore.OpenShift(0);
+var quickToken=Guid.NewGuid().ToString();quickStore.SaveDraft(new(quickToken,"Caja rápida",[new(quickBolis.Id,10)],0,"",DateTimeOffset.Now.ToString("O")));
+var quickReopened=new Store(quickFolder);quickReopened.SignIn(quickPassword);if(quickReopened.LoadDraft()?.Lines.Single().ProductId!=quickBolis.Id)throw new Exception("Borrador rápido perdido");
+var quickReceipt=quickStore.Checkout([new(quickBolis,10)],0,10000,0,quickToken,"","");
+if(!quickReceipt.Contains("Cobro rápido — Bolis de agua y leche")||!quickReceipt.Contains("Cambio: $50.00")||quickStore.Products().Single(p=>p.Id==1).Stock!=20||quickStore.ExpectedCash()!=5000||quickStore.LoadDraft()!=null)throw new Exception("Venta rápida, caja, inventario o borrador incorrectos");
+quickStore.Checkout([new(quickBolis,10)],0,10000,0,quickToken,"","");if(quickStore.Sales().Count!=1)throw new Exception("Venta rápida duplicada");
+var quickCut=quickStore.CloseShift(5000);if(quickStore.Cuts().Single(p=>p.Id==quickCut).Total!=50m)throw new Exception("Corte rápido incorrecto");
+Console.WriteLine("OK cobro rápido por gama, borrador, ticket sin sabores, cambio, caja, corte e inventario por sabor intacto");
+
+var wholesaleVm=new SaleViewModel();wholesaleVm.Cart.AddRange([new(lemon,5),new(pineapple,5)]);if(wholesaleVm.TotalCents!=5000)throw new Exception("Mayoreo entre sabores");wholesaleVm.SetQuantity(pineapple.Id,4);if(wholesaleVm.TotalCents!=5400)throw new Exception("No regresó a menudeo al bajar de diez");
+var otherGroup=quickPaletas with{Retail=34000,Wholesale=30000};
+Check("Umbral global exacto con varias gamas",35000,[new(lemon,5),new(pineapple,5),new(otherGroup,1)]);
+Check("Al quitar consumo conserva solo gama con diez",7700,[new(lemon,5),new(pineapple,5),new(quickPaletas with{Retail=2700,Wholesale=2500},1)]);
+Console.WriteLine("OK recálculo por gama al quitar cantidades y al bajar del umbral global");

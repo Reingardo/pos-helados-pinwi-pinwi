@@ -1,0 +1,27 @@
+[
+  {
+    "id": 77,
+    "source": "https://github.com/Reingardo/helados-pinwi-pinwi/blob/main/public/assets/PAQUETE100PINWI.jpeg.webp",
+    "description": "100 pinwis surtidos"
+  },
+  {
+    "id": 78,
+    "source": "https://github.com/Reingardo/helados-pinwi-pinwi/blob/main/public/assets/paquetebollos.jpg.webp",
+    "description": "30 bollos gourmet"
+  },
+  {
+    "id": 79,
+    "source": "https://github.com/Reingardo/helados-pinwi-pinwi/blob/main/public/assets/PAQUETEFIESTA.jpeg.webp",
+    "description": "75 pinwis + 20 heladitos gourmet"
+  },
+  {
+    "id": 80,
+    "source": "https://github.com/Reingardo/helados-pinwi-pinwi/blob/main/public/assets/esquimalespaquetejpeg.jpeg.webp",
+    "description": "20 piezas: 5 coco, 5 chispitas, 5 nuez y 5 clásicos"
+  },
+  {
+    "id": 81,
+    "source": "https://github.com/Reingardo/helados-pinwi-pinwi/blob/main/public/assets/PAQUETESURTIDO.jpeg.webp",
+    "description": "50 pinwis, 10 nieves, 5 paletas de leche, 5 artesanales, 5 de agua, 5 esquimales, 10 heladitos gourmet y 5 sándwiches"
+  }
+]

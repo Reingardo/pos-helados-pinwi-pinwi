@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 77,
+    "Category": "Paquetes",
+    "Name": "Paquete Pinwi — 100 pinwis surtidos",
+    "Retail": 50000,
+    "Wholesale": 50000,
+    "Stock": 0,
+    "Image": "Packages/77.png"
+  },
+  {
+    "Id": 78,
+    "Category": "Paquetes",
+    "Name": "Paquete Bollos — 30 bollos gourmet",
+    "Retail": 48000,
+    "Wholesale": 48000,
+    "Stock": 0,
+    "Image": "Packages/78.png"
+  },
+  {
+    "Id": 79,
+    "Category": "Paquetes",
+    "Name": "Paquete Fiesta — 75 pinwis + 20 heladitos gourmet",
+    "Retail": 69500,
+    "Wholesale": 69500,
+    "Stock": 0,
+    "Image": "Packages/79.png"
+  },
+  {
+    "Id": 80,
+    "Category": "Paquetes",
+    "Name": "Paquete Esquimales — 20 piezas: 5 coco, 5 chispitas, 5 nuez y 5 clásicos",
+    "Retail": 44500,
+    "Wholesale": 44500,
+    "Stock": 0,
+    "Image": "Packages/80.png"
+  },
+  {
+    "Id": 81,
+    "Category": "Paquetes",
+    "Name": "Paquete Surtido — 50 pinwis, 10 nieves, 5 paletas de leche, 5 artesanales, 5 de agua, 5 esquimales, 10 heladitos gourmet y 5 sándwiches",
+    "Retail": 109000,
+    "Wholesale": 109000,
+    "Stock": 0,
+    "Image": "Packages/81.png"
+  }
+]

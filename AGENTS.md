@@ -1,5 +1,31 @@
 # POS de Helados Pinwi Pinwi
 
+## Estado vigente — 16 de noviembre de 2026
+
+Esta sección y las decisiones posteriores del usuario prevalecen sobre las notas históricas y los requisitos iniciales en conflicto.
+
+- Repositorio independiente: https://github.com/Reingardo/pos-helados-pinwi-pinwi, rama main. No trabajar en el repositorio padre ni modificar la web de referencia.
+- Última entrega local: dist/ProductosCobroRapido/PinwiPOS/Pinwi.Pos.exe. Los accesos del escritorio apuntan allí. Cerrar el POS anterior antes de abrir otra versión. No sobrescribir una entrega en ejecución.
+- Esquema SQLite **v7**, con respaldo previo a migraciones. No abrir ejecutables antiguos sobre la base migrada. Nunca borrar ni revertir bases para corregir errores.
+- Catálogo: 76 productos individuales, cinco paquetes y siete entradas de cobro rápido por gama. Las altas posteriores del administrador son adicionales.
+- Inicio de venta: botón **Productos**, al lado de **Cobro rápido**. Las tarjetas rápidas llevan imagen a la izquierda, nombre, precio por pieza y mayoreo. Esquimales se venden desde Productos y no aparecen en cobro rápido.
+- **Mayoreo actualizado:** desde 10 piezas de la misma gama, sumando sabores diferentes, tanto en venta normal como rápida. Bolis de agua/leche comparten gama; bollos/heladitos de agua/leche también. Esquimales conservan conteo por presentación. Desde $400 valorados a menudeo se activa mayoreo global, sin perderlo porque el total ajustado baje de $400. No recalcular ventas históricas.
+- Las ventas rápidas registran la gama, sin inventar sabores ni descontar existencias de un sabor concreto. Comparten carrito, cobro, borrador y reportes con venta normal. Sus precios son independientes y editables en Productos y precios; si los sabores tenían precios distintos al migrar, el administrador debe confirmar los precios de la gama rápida antes de usarla.
+- Paquetes: Pinwi $500; Bollos $480; Fiesta $695; Esquimales $445; Surtido $1,090. Una unidad del carrito representa un paquete completo. No hay selección ni descuento de componentes por sabor.
+- Productos y precios permite **+ Añadir producto** y **Editar producto y foto**: nombre, categoría existente/nueva, menudeo, mayoreo, foto opcional, motivo y autorización. Nuevos productos aparecen en Venta con existencia inicial cero, informativa. No cambiar existencias al editar nombre, precio o foto.
+- Fotos personalizadas normalizadas a PNG y guardadas como BLOB en SQLite. La carpeta de imágenes de datos es caché reconstruible; el respaldo de base incluye las fotos. Se conserva la imagen local de categoría como alternativa.
+- Pruebas completas de lógica aprobadas con datos temporales aislados: precios y agrupación por gama, umbrales, pagos/cambio, idempotencia, rollback, caja/cortes, gastos, borradores, migraciones, altas/ediciones, autorización, fotos y recuperación desde respaldo independiente. La vista final de cobro rápido con imágenes fue renderizada y revisada. La última compilación y publicación terminaron correctamente. No afirmar que imprimir en una impresora física esté verificado.
+- Smart App Control bloqueó antes las compilaciones sin firma. El usuario autorizó expresamente desactivarlo y realizó personalmente el cambio después de que la herramienta no pudiera abrir Seguridad de Windows. Tras su aviso, pasaron las pruebas y abrió la actualización de CobroRapido. No se modificó la seguridad con scripts. Ese inicio no equivale a revisar todo el flujo interactivo de la última entrega ProductosCobroRapido. No sugerir desactivar otras protecciones.
+- **Prioridad actual: entrega local.** El usuario indicó que no desea publicar por ahora porque el POS no está terminado. Antes había autorizado el envío público gratuito a Store: v1.0.7.0 quedó en certificación y con publicación manual retenida. No pulsar Publish now ni continuar publicación sin nueva indicación. El paquete de Store es anterior al último ajuste de imágenes y texto Productos. Consultar DISTRIBUCION-STORE.md; no confundir Validated/In certification con aprobación o disponibilidad.
+- No subir cuentas, contraseñas, bases, respaldos, ventas, cortes ni gastos operativos o de prueba. dist, .tools, artifacts y binarios siguen ignorados. El catálogo comercial, imágenes y procedencia sí se versionan. Una instalación limpia crea al administrador sin credenciales predeterminadas.
+- WhatsApp continúa siendo preparación de nota y envío manual con internet. No afirmar envío desatendido ni entrega confirmada.
+- Pendiente: impresión física 58/80 mm, revisión interactiva completa de la última entrega, restauración desde UI, roles/cajeros, otros descuentos, devoluciones/cancelaciones, inventario avanzado y domicilio.
+
+## Notas históricas de sesiones anteriores
+
+Las rutas, versiones y reglas antiguas de las siguientes notas conservan el historial; aplicar primero el estado vigente anterior.
+
+
 ## Leer primero al retomar otra sesión
 
 **Actualización posterior importante:** el enlace anterior a `dist/Actualizacion` dejó de abrir porque la base local ya requiere la versión nueva. El registro de .NET confirmó «Esta base requiere una versión más reciente del POS». Se inició correctamente el ejecutable existente de `dist/Gastos/PinwiPOS/Pinwi.Pos.exe`, sin cambiar seguridad ni borrar/revertir la base. Los accesos directos del escritorio ahora apuntan a `dist/Gastos`. Esto verifica el inicio del proceso, no todo el flujo de gastos o impresión. No volver a proporcionar el enlace al ejecutable anterior para esta base. Las notas históricas de bloqueo de firma que siguen abajo describen los intentos previos.
@@ -331,3 +357,5 @@ Estas decisiones posteriores prevalecen sobre los requisitos anteriores que entr
 - En navegación de ventas usar «Inicio» y «Volver a inicio» en lugar de «Gamas».
 - Agregar «Registrar gastos» junto a los controles de caja. Registrar importe, concepto, proveedor/persona, usuario y origen del pago durante un turno abierto. Descontar los pagos de caja del efectivo esperado; los pagos externos solo del resultado de ventas menos gastos.
 - El reporte diario y la nota de WhatsApp deben incluir ventas, total de gastos, resultado y detalle por concepto. Guardar CSV de gastos junto al CSV de ventas, sin modificar cortes anteriores. «Resultado» no equivale a utilidad contable.
+
+- Decisión más reciente: mayoreo por cantidad suma todos los sabores de una misma gama en venta normal y rápida, desde 10 piezas; umbral global desde $400 a menudeo. Esta decisión reemplaza las reglas históricas que exigían el mismo sabor. Esquimales se mantienen por presentación.

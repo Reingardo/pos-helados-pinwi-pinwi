@@ -3,20 +3,29 @@ using System.Runtime.CompilerServices;
 namespace Pinwi.Pos;
 public record Product(int Id, string Category, string Name, long Retail, long Wholesale, int Stock, string Image)
 {
+ [System.Text.Json.Serialization.JsonIgnore]
+ public string? CustomImagePath { get; init; }
+ public string? QuickGroup { get; init; }
+ public bool QuickReady { get; init; } = true;
+ public bool IsQuick => QuickGroup != null;
+ public string WholesaleGroup => ProductGroups.Key(this);
+ public string DisplayName => Category == "Paquetes" ? Name.Split(" — ")[0] : Name;
+ public string Detail => IsQuick ? "Por gama · sin elegir sabor" : Category == "Paquetes" && Name.Contains(" — ") ? Name[(Name.IndexOf(" — ")+3)..] : Category;
+ public string PriceNote => Category == "Paquetes" ? "Precio por paquete" : $"Mayoreo ${Wholesale / 100m:0.00}";
  public string Family => Category.StartsWith("Pinwis") ? "Bolis / Pinwis" : Category.StartsWith("Heladitos") ? "Bollos / Heladitos" : Category;
- public string Caption => $"{Name}\n${Retail / 100m:0.00} · Mayoreo ${Wholesale / 100m:0.00}";
+ public string Caption => Category == "Paquetes" ? $"{Name}\n${Retail / 100m:0.00} por paquete" : $"{Name}\n${Retail / 100m:0.00} · Mayoreo ${Wholesale / 100m:0.00}";
  public decimal RetailPesos => Retail / 100m;
  public decimal WholesalePesos => Wholesale / 100m;
- public string StockWarning => Stock<=0 ? "Producto sin existencia" : "";
- public string CategoryImagePath => System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", Image);
- public string ImagePath => System.IO.File.Exists(System.IO.Path.Combine(AppContext.BaseDirectory,"Assets","Products",$"{Id}.png")) ? System.IO.Path.Combine(AppContext.BaseDirectory,"Assets","Products",$"{Id}.png") : CategoryImagePath;
+ public string StockWarning => !QuickReady ? "Configura los precios de esta gama" : IsQuick ? "" : Stock<=0 ? "Producto sin existencia" : "";
+ public string CategoryImagePath => CustomImagePath ?? System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", Image);
+ public string ImagePath => CustomImagePath ?? (System.IO.File.Exists(System.IO.Path.Combine(AppContext.BaseDirectory,"Assets","Products",$"{Id}.png")) ? System.IO.Path.Combine(AppContext.BaseDirectory,"Assets","Products",$"{Id}.png") : CategoryImagePath);
 }
 public record CartItem(Product Product, int Quantity);
 public record PricedLine(int ProductId, string Name, int Quantity, long UnitPrice, bool IsWholesale, long Discount, string StockWarning = "", string ImagePath = "")
 {
  public long Gross => UnitPrice * Quantity;
  public long Net => Gross - Discount;
- public string Mode => IsWholesale ? "Mayoreo" : "Menudeo";
+ public string Mode => Name.StartsWith("Paquetes — ") ? "Precio de paquete" : IsWholesale ? "Mayoreo" : "Menudeo";
  public decimal Price => UnitPrice / 100m;
  public decimal Total => Net / 100m;
 }
@@ -28,7 +37,8 @@ public static class Pricing
   var items = source.GroupBy(x=>x.Product.Id).Select(g=>new CartItem(g.First().Product,g.Sum(x=>x.Quantity))).ToList();
   if (items.Any(x=>x.Quantity <= 0)) throw new ArgumentException("Cantidad inválida.");
   var global = items.Sum(x=>checked(x.Product.Retail*x.Quantity)) >= 40000;
-  return items.Select(x=> { var wholesale = global || x.Quantity >= 10; var price = wholesale ? x.Product.Wholesale : x.Product.Retail; var discount = wholesale && !stack ? 0 : (long)decimal.Round(price*x.Quantity*percent/100m,0,MidpointRounding.AwayFromZero); return new PricedLine(x.Product.Id,x.Product.Category+" — "+x.Product.Name,x.Quantity,price,wholesale,discount,x.Quantity>x.Product.Stock?"Producto sin existencia suficiente registrada":"",x.Product.ImagePath); }).ToList();
+  var groupQuantities=items.GroupBy(x=>x.Product.WholesaleGroup).ToDictionary(g=>g.Key,g=>g.Sum(x=>x.Quantity));
+  return items.Select(x=> { var wholesale = global || groupQuantities[x.Product.WholesaleGroup] >= 10; var price = wholesale ? x.Product.Wholesale : x.Product.Retail; var discount = wholesale && !stack ? 0 : (long)decimal.Round(price*x.Quantity*percent/100m,0,MidpointRounding.AwayFromZero); return new PricedLine(x.Product.Id,x.Product.Category+" — "+x.Product.Name,x.Quantity,price,wholesale,discount,!x.Product.IsQuick && x.Quantity>x.Product.Stock?"Producto sin existencia suficiente registrada":"",x.Product.ImagePath); }).ToList();
  }
 }
 public class SaleViewModel : INotifyPropertyChanged

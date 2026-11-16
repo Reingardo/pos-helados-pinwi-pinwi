@@ -1,0 +1,12 @@
+<Window x:Class="Pinwi.Pos.ProductWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Producto" Width="650" Height="740" MinHeight="600" WindowStartupLocation="CenterOwner" Background="#F6F5FA" FontFamily="Segoe UI">
+<DockPanel Margin="24"><StackPanel DockPanel.Dock="Bottom"><TextBlock x:Name="Error" Foreground="#C43E5A" TextWrapping="Wrap" Margin="4,8"/>
+<WrapPanel HorizontalAlignment="Right"><Button Content="Cancelar" IsCancel="True"/><Button x:Name="SaveButton" Content="Guardar producto" Click="Save" Background="#D73680" Foreground="White"/></WrapPanel>
+</StackPanel><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+<TextBlock x:Name="Heading" Text="Añadir producto" FontSize="25" FontWeight="SemiBold"/>
+<TextBlock Text="Nombre del producto / sabor" Margin="4,16,4,0"/><TextBox x:Name="ProductName" MaxLength="300"/>
+<TextBlock Text="Categoría (elige una o escribe una nueva)" Margin="4,8,4,0"/><ComboBox x:Name="Category" IsEditable="True" Margin="4" Padding="8"/>
+<Grid Margin="0,8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Menudeo (MXN)" Margin="4"/><TextBox x:Name="Retail"/></StackPanel><StackPanel Grid.Column="1"><TextBlock Text="Mayoreo (MXN)" Margin="4"/><TextBox x:Name="Wholesale"/></StackPanel></Grid>
+<Grid Margin="4,8"><Grid.ColumnDefinitions><ColumnDefinition Width="140"/><ColumnDefinition/></Grid.ColumnDefinitions><Border Background="White" CornerRadius="12" Padding="6"><Image x:Name="Photo" Height="125" Stretch="Uniform"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0"><Button Content="Cargar foto…" Click="ChoosePhoto" HorizontalAlignment="Left"/><TextBlock x:Name="PhotoLabel" Text="Opcional · JPG, PNG, WebP, BMP o TIFF" TextWrapping="Wrap" Foreground="#64748B" Margin="4"/><TextBlock Text="La imagen se guarda en el POS y en sus respaldos." TextWrapping="Wrap" Margin="4" Foreground="#64748B"/></StackPanel></Grid>
+<TextBlock Text="Motivo del cambio" Margin="4,8,4,0"/><TextBox x:Name="Reason"/>
+<TextBlock Text="Contraseña del administrador" Margin="4,8,4,0"/><PasswordBox x:Name="Password" Padding="10" Margin="4"/>
+</StackPanel></ScrollViewer></DockPanel></Window>
