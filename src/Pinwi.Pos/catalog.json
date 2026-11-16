@@ -1,0 +1,686 @@
+[
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Limón",
+    "Id": 1,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Piña",
+    "Id": 2,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Uva",
+    "Id": 3,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Chamoy",
+    "Id": 4,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Tamarindo",
+    "Id": 5,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Mango con chile",
+    "Id": 6,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Fresa agua",
+    "Id": 7,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de agua",
+    "Name": "Piña con chile",
+    "Id": 8,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Pistache",
+    "Id": 9,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Coco",
+    "Id": 10,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Chicle",
+    "Id": 11,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Fresa leche",
+    "Id": 12,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Chocolate",
+    "Id": 13,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Rompope",
+    "Id": 14,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Plátano",
+    "Id": 15,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Nuez",
+    "Id": 16,
+    "Stock": 0
+  },
+  {
+    "Image": "bolis-pinwis.jpg",
+    "Wholesale": 500,
+    "Retail": 600,
+    "Category": "Pinwis de leche",
+    "Name": "Mango",
+    "Id": 17,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Pingüino",
+    "Id": 18,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Gansito",
+    "Id": 19,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Fresas con crema",
+    "Id": 20,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Oreo",
+    "Id": 21,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Chocorrol",
+    "Id": 22,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Bubulubu",
+    "Id": 23,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Mazapán",
+    "Id": 24,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Coco",
+    "Id": 25,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Nutella",
+    "Id": 26,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Pay de limón",
+    "Id": 27,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Duvalín",
+    "Id": 28,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de leche",
+    "Name": "Arroz con leche",
+    "Id": 29,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de agua",
+    "Name": "Mango chamoy",
+    "Id": 30,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de agua",
+    "Name": "Picafresa",
+    "Id": 31,
+    "Stock": 0
+  },
+  {
+    "Image": "bollos.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Heladitos de agua",
+    "Name": "Tamarindo con chile",
+    "Id": 32,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Chamoy",
+    "Id": 33,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Melón",
+    "Id": 34,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Fresa",
+    "Id": 35,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Limón",
+    "Id": 36,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Tamarindo",
+    "Id": 37,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Piña",
+    "Id": 38,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Uva",
+    "Id": 39,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Sandía",
+    "Id": 40,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de agua.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Paletas de agua",
+    "Name": "Mango",
+    "Id": 41,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Fresa",
+    "Id": 42,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Nuez",
+    "Id": 43,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Galleta Oreo",
+    "Id": 44,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Mango",
+    "Id": 45,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Chicle",
+    "Id": 46,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Carlos V",
+    "Id": 47,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Coco",
+    "Id": 48,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Mazapán",
+    "Id": 49,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas de leche.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Paletas de leche",
+    "Name": "Rompope",
+    "Id": 50,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Pingüinos",
+    "Id": 51,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Gansito",
+    "Id": 52,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Fresa kiwi",
+    "Id": 53,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Chocorrol",
+    "Id": 54,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Guayaba kiwi",
+    "Id": 55,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Piña Skwinkles",
+    "Id": 56,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Pay de limón",
+    "Id": 57,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Cóctel de frutas",
+    "Id": 58,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Fresas con crema",
+    "Id": 59,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Mango manzana chile",
+    "Id": 60,
+    "Stock": 0
+  },
+  {
+    "Image": "paletas artesanales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Paletas artesanales",
+    "Name": "Mango chamoy Panditas",
+    "Id": 61,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Fresa",
+    "Id": 62,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Nuez",
+    "Id": 63,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Vainilla",
+    "Id": 64,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Oreo",
+    "Id": 65,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Mango chamoy",
+    "Id": 66,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Pica fresa",
+    "Id": 67,
+    "Stock": 0
+  },
+  {
+    "Image": "nieves.jpg",
+    "Wholesale": 2100,
+    "Retail": 2300,
+    "Category": "Nieve",
+    "Name": "Limón",
+    "Id": 68,
+    "Stock": 0
+  },
+  {
+    "Image": "sandwich healado.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Sándwich",
+    "Name": "Fresa",
+    "Id": 69,
+    "Stock": 0
+  },
+  {
+    "Image": "sandwich healado.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Sándwich",
+    "Name": "Nuez",
+    "Id": 70,
+    "Stock": 0
+  },
+  {
+    "Image": "sandwich healado.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Sándwich",
+    "Name": "Oreo",
+    "Id": 71,
+    "Stock": 0
+  },
+  {
+    "Image": "sandwich healado.jpg",
+    "Wholesale": 1600,
+    "Retail": 1800,
+    "Category": "Sándwich",
+    "Name": "Vainilla",
+    "Id": 72,
+    "Stock": 0
+  },
+  {
+    "Image": "esquimales.jpg",
+    "Wholesale": 2000,
+    "Retail": 2200,
+    "Category": "Esquimales",
+    "Name": "Esquimal grande",
+    "Id": 73,
+    "Stock": 0
+  },
+  {
+    "Image": "esquimales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Esquimales",
+    "Name": "Esquimal grande con coco",
+    "Id": 74,
+    "Stock": 0
+  },
+  {
+    "Image": "esquimales.jpg",
+    "Wholesale": 2200,
+    "Retail": 2400,
+    "Category": "Esquimales",
+    "Name": "Esquimal grande con chispas",
+    "Id": 75,
+    "Stock": 0
+  },
+  {
+    "Image": "esquimales.jpg",
+    "Wholesale": 2500,
+    "Retail": 2700,
+    "Category": "Esquimales",
+    "Name": "Esquimal grande con nuez",
+    "Id": 76,
+    "Stock": 0
+  }
+]

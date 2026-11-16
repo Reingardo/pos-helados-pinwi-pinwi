@@ -1,0 +1,53 @@
+name: Windows - build and tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v6.1.0
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore tests/Pinwi.Tests
+      - name: Build
+        run: dotnet build tests/Pinwi.Tests -c Release --no-restore
+      - name: Business logic and SQLite tests
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          dotnet run --project tests/Pinwi.Tests -c Release --no-build 2>&1 | Tee-Object artifacts/test-results.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Publish self-contained Windows app
+        run: dotnet publish src/Pinwi.Pos -c Release -r win-x64 --self-contained true -o dist/ci/PinwiPOS
+      - name: Include installer and instructions
+        shell: pwsh
+        run: |
+          Copy-Item scripts/Instalar.ps1 dist/ci/Instalar.ps1
+          Copy-Item README.md dist/ci/README.md
+          Copy-Item ESTADO-PRUEBAS-GASTOS.md dist/ci/ESTADO-PRUEBAS-GASTOS.md
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: PinwiPOS-Windows-x64-unsigned
+          path: dist/ci/
+          if-no-files-found: error
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: test-results
+          path: artifacts/test-results.txt
+          if-no-files-found: ignore
