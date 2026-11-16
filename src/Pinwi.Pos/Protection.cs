@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.Data.Sqlite;
 namespace Pinwi.Pos;
 public record DraftLine(int ProductId,int Quantity);
-public record SaleDraft(string Token,string Owner,List<DraftLine> Lines,decimal Discount,string Reason,string Saved);
+public record SaleDraft(string Token,string Owner,List<DraftLine> Lines,decimal Discount,string Reason,string Saved,DiscountPlan? ExtraDiscounts=null);
 public sealed partial class Store
 {
  public void SaveDraft(SaleDraft draft)
@@ -34,12 +34,35 @@ public sealed class AutoProtection : IDisposable
     await requests.WaitAsync(interval,stop.Token);await Task.Delay(coalesce,stop.Token);Interlocked.Exchange(ref pending,0);
     var folder=Path.Combine(store.DirectoryPath,"Respaldos","Automaticos");Directory.CreateDirectory(folder);
     var path=Path.Combine(folder,$"pinwi-{DateTime.Now:yyyyMMdd-HHmmss-fff}-{Guid.NewGuid():N}.db");
-    store.Backup(path);Status=$"Respaldo automático: {DateTime.Now:t}";
-    foreach(var old in new DirectoryInfo(folder).GetFiles("pinwi-*.db").OrderByDescending(f=>f.Name).Skip(288))old.Delete();
+    store.Backup(path);
+    KeepCalendarCopies(folder);
+    Status=$"Respaldo automático: {DateTime.Now:t}";
+    var external=store.GetSettings().BackupDirectory;
+    if(external.Length>0)
+    {
+     try{Directory.CreateDirectory(external);var copy=Path.Combine(external,Path.GetFileName(path));store.Backup(copy);KeepCalendarCopies(external);TrimRecent(external);}
+     catch(Exception ex){Status="Respaldo local guardado; falló la copia externa. Revisa la unidad.";Log(ex);}
+    }
+    TrimRecent(folder);
    }
    catch(OperationCanceledException){break;}
-   catch(Exception ex){Status="No se pudo crear el respaldo automático. Revisa disco y permisos.";try{File.AppendAllText(Path.Combine(store.DirectoryPath,"respaldo-errores.log"),$"{DateTimeOffset.Now:O} {ex.Message}{Environment.NewLine}");}catch(IOException){}}
+   catch(Exception ex){Status="No se pudo crear el respaldo automático. Revisa disco y permisos.";Log(ex);}
   }
  }
  public void Dispose(){store.Changed-=Request;stop.Cancel();}
+ public async Task StopAsync(){Dispose();await worker.ConfigureAwait(false);}
+ void Log(Exception ex){try{File.AppendAllText(Path.Combine(store.DirectoryPath,"respaldo-errores.log"),$"{DateTimeOffset.Now:O} {ex.Message}{Environment.NewLine}");}catch(Exception){}}
+ static void TrimRecent(string folder){foreach(var old in new DirectoryInfo(folder).GetFiles("pinwi-*.db").OrderByDescending(f=>f.Name).Skip(288))old.Delete();}
+ void KeepCalendarCopies(string folder)
+ {
+  var date=BusinessDay.Bounds(DateTimeOffset.Now).Start.Date;
+  var daily=Path.Combine(folder,"Diarios");var weekly=Path.Combine(folder,"Semanales");Directory.CreateDirectory(daily);Directory.CreateDirectory(weekly);
+  // Separate buckets cannot be displaced by a busy day's short-term copies.
+  var dayPath=Path.Combine(daily,$"diario-{date:yyyyMMdd}.db");
+  var week=date.AddDays(-((7+(int)date.DayOfWeek-(int)DayOfWeek.Monday)%7));var weekPath=Path.Combine(weekly,$"semanal-{week:yyyyMMdd}.db");
+  if(!File.Exists(dayPath))store.Backup(dayPath);
+  if(!File.Exists(weekPath))store.Backup(weekPath);
+  foreach(var old in new DirectoryInfo(daily).GetFiles("diario-*.db").OrderByDescending(f=>f.Name).Skip(30))old.Delete();
+  foreach(var old in new DirectoryInfo(weekly).GetFiles("semanal-*.db").OrderByDescending(f=>f.Name).Skip(12))old.Delete();
+ }
 }

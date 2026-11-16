@@ -37,7 +37,8 @@ jobs:
         run: |
           Copy-Item scripts/Instalar.ps1 dist/ci/Instalar.ps1
           Copy-Item README.md dist/ci/README.md
-          Copy-Item ESTADO-PRUEBAS-GASTOS.md dist/ci/ESTADO-PRUEBAS-GASTOS.md
+          Copy-Item MANUAL-OPERACION.md dist/ci/MANUAL-OPERACION.md
+          Copy-Item ESTADO-OPERACION-V8.md dist/ci/ESTADO-OPERACION-V8.md
       - name: Upload Windows package
         uses: actions/upload-artifact@v7.0.2
         with:

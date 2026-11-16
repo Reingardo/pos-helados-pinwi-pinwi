@@ -21,9 +21,9 @@ public partial class ProductWindow : Window
   try{var prepared=Store.PrepareProductImage(dialog.FileName);Photo.Source=Load(prepared);photo=prepared;PhotoLabel.Text=Path.GetFileName(dialog.FileName);Error.Text="";}catch(Exception){Error.Text="No se pudo leer la imagen. Usa una imagen válida de hasta 20 MB y 8,000 píxeles por lado. Si es WebP, conviértela a PNG o JPG.";}
  }
  static long Money(string value){if(!decimal.TryParse(value,out var amount)||amount<0||decimal.Round(amount,2)!=amount)throw new Exception("Captura precios no negativos con hasta dos decimales.");return checked((long)(amount*100));}
- void Save(object sender,RoutedEventArgs e)
+ async void Save(object sender,RoutedEventArgs e)
  {
-  try{SaveButton.IsEnabled=false;SavedId=store.SaveProduct(product?.Id,Category.Text,ProductName.Text,Money(Retail.Text),Money(Wholesale.Text),Reason.Text,Password.Password,photo);DialogResult=true;}
+  try{SaveButton.IsEnabled=false;var category=Category.Text;var name=ProductName.Text;var retail=Money(Retail.Text);var wholesale=Money(Wholesale.Text);var reason=Reason.Text;var password=Password.Password;SavedId=await Task.Run(()=>store.SaveProduct(product?.Id,category,name,retail,wholesale,reason,password,photo));DialogResult=true;}
   catch(Exception ex){Error.Text=ex.Message;SaveButton.IsEnabled=true;}
  }
 }

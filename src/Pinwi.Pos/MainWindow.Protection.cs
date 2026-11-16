@@ -11,7 +11,7 @@ public partial class MainWindow
  void StartProtection()
  {
   protection=new AutoProtection(store);vm.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(vm.Lines))SaveCart();};
-  protectionTimer=new DispatcherTimer{Interval=TimeSpan.FromSeconds(2)};protectionTimer.Tick+=(_,_)=>{BackupState.Text=protection.Status;BackupState.Foreground=protection.Status.StartsWith("No se pudo")?Brushes.Crimson:Brushes.Gray;};protectionTimer.Start();
+  protectionTimer=new DispatcherTimer{Interval=TimeSpan.FromSeconds(2)};protectionTimer.Tick+=(_,_)=>{BackupState.Text=protection.Status;BackupState.Foreground=(protection.Status.StartsWith("No se pudo")||protection.Status.Contains("falló"))?Brushes.Crimson:Brushes.Gray;};protectionTimer.Start();
   Closed+=(_,_)=>{protectionTimer.Stop();protection.Dispose();};
  }
  void SaveCart(int? editedId=null,int? quantity=null)
@@ -20,7 +20,7 @@ public partial class MainWindow
   try
   {
    var lines=vm.Cart.Select(x=>new DraftLine(x.Product.Id,editedId==x.Product.Id&&quantity.HasValue?quantity.Value:x.Quantity)).Where(x=>x.Quantity>0).ToList();
-   store.SaveDraft(new(token,store.CurrentUserName,lines,vm.Discount,discountReason,DateTimeOffset.Now.ToString("O")));
+   store.SaveDraft(new(token,store.CurrentUserName,lines,vm.Discount,discountReason,DateTimeOffset.Now.ToString("O"),vm.ExtraDiscounts));
    DraftState.Text=$"Venta guardada · {DateTime.Now:t}";DraftState.Foreground=Brushes.Gray;
   }
   catch(Exception ex){DraftState.Text="No se pudo guardar la venta pendiente. Revisa espacio y permisos.";DraftState.Foreground=Brushes.Crimson;Status.Text=ex.Message;}
@@ -28,7 +28,7 @@ public partial class MainWindow
  void RestoreCart()
  {
   var draft=store.LoadDraft();if(draft==null||draft.Lines.Count==0)return;
-  token=draft.Token;discountReason=draft.Reason;discountPassword="";vm.Discount=draft.Discount;
+  token=draft.Token;discountReason=draft.Reason;discountPassword="";vm.Discount=draft.Discount;vm.ExtraDiscounts=draft.ExtraDiscounts??new();
   foreach(var l in draft.Lines){var p=products.FirstOrDefault(x=>x.Id==l.ProductId);if(p!=null&&l.Quantity>0&&l.Quantity<=100000)vm.Cart.Add(new(p,l.Quantity));}
   vm.Refresh();DraftState.Text="Venta pendiente recuperada. Precios actualizados al catálogo vigente.";
  }

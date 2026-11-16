@@ -1,93 +1,54 @@
 # Helados Pinwi Pinwi — POS para Windows
 
-Repositorio del POS: https://github.com/Reingardo/pos-helados-pinwi-pinwi
+Aplicación de escritorio local en C# / .NET 10, WPF y SQLite. Funciona sin internet y conserva menú, imágenes, precios, ventas y fotos en el equipo del negocio. Repositorio independiente: https://github.com/Reingardo/pos-helados-pinwi-pinwi.
 
-**Para continuar en otra sesión, empieza por [CONTINUAR-MANANA.md](CONTINUAR-MANANA.md) y [AGENTS.md](AGENTS.md).** Incluyen las decisiones del usuario, el estado del código, las pruebas y los pendientes.
+**Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. Microsoft Store permanece sin cambios; no publicar sin una nueva indicación.
 
-El repositorio conserva el menú, precios, datos comerciales, logo e imágenes. No incluye bases de datos, cuentas, contraseñas, ventas de prueba ni certificados privados. Una instalación nueva solicita crear al administrador y empieza sin ventas.
+## Abrir o actualizar
 
-Primera versión funcional en C# / .NET 10, WPF y SQLite. Opera localmente sin conexión. **Todavía no implementa todo el alcance de AGENTS.md.**
+Cierra la versión anterior y abre `dist/OperacionSegura-v111/PinwiPOS/Pinwi.Pos.exe`. El ZIP es `dist/PinwiPOS-OperacionSegura-v111.zip`; extrae todo su contenido. `Instalar.ps1` instala por usuario y crea el acceso de escritorio. El paquete es Windows x64 self-contained y no necesita descargar .NET para operar.
 
-La versión actual incluye paquetes, alta y edición de productos con foto, y cobro rápido por gama con imágenes. En Venta se navega con **Productos** y **Cobro rápido**. Las fotos personalizadas se incluyen en los respaldos de SQLite. Consulta AGENTS.md para el estado y las limitaciones actuales. La prioridad es la entrega local; Microsoft Store no está publicado.
+La apertura migra a v8 con respaldo previo. Los datos están en `%LOCALAPPDATA%/PinwiPOS`, separados del programa. No abras entregas anteriores sobre la base migrada. No borres ni reviertas datos para resolver errores. El paquete local sigue sin firma; no se cambian protecciones de Windows.
 
-## Ejecutar
+Una instalación limpia crea al primer administrador sin credenciales predeterminadas y sin ventas de prueba. Selecciona el usuario al entrar; las cuentas de cajero se crean desde Administración.
 
-En esta computadora, abre `dist/ProductosCobroRapido/PinwiPOS/Pinwi.Pos.exe`. El paquete incluye .NET; el equipo del negocio no necesita instalar el SDK ni conectarse a internet. Cierra cualquier instancia del POS antes de abrir otra.
+## Funciones disponibles
 
-Para trasladarlo a otra computadora, utiliza un paquete de la versión actual y extrae **todo** su contenido. El ZIP antiguo `dist/PinwiPOS-Actualizado.zip` no debe usarse con la base migrada. La actualización con gastos sigue identificada como pendiente de firma; su inicio en esta computadora no garantiza autorización en otros equipos. No muevas solamente el `.exe`.
+- 76 productos individuales iniciales, cinco paquetes y siete entradas de cobro rápido por gama, más altas del administrador. Fotos locales y personalizadas incluidas en respaldo.
+- Mayoreo desde 10 piezas de la misma gama, mezclando sabores y venta normal/rápida; esquimales por presentación. Umbral global desde $400 a menudeo, sin perderlo al bajar el total ajustado. Umbrales configurables para ventas nuevas.
+- Cobro en efectivo, tarjeta externa o mixto, sugerencias y cambio antes de confirmar. Existencias informativas sin bloqueo y sin valores negativos.
+- Descuentos generales y por partida, fijos o porcentuales, con autorización. Acumulación con mayoreo configurable y reparto exacto de centavos.
+- Carrito recuperable, varios pendientes con referencia por usuario y confirmación transaccional sin duplicación por reintentos.
+- Apertura/cierre de caja, gastos de caja/externos, entradas y retiros, cortes conservados y exportaciones diarias.
+- Devoluciones parciales y cancelación a precios históricos; conciliación con caja y tarjeta originales, sin borrar la venta.
+- Historial por fechas, usuario y método; 100 operaciones por página con totales completos. CSV de todo el periodo y desglose de productos/gamas/paquetes, sin corte en 1,000 ventas. Cajero consulta sus propias operaciones.
+- Cuentas de administrador/cajero, bloqueo/cambio de sesión y autorización en la lógica de operaciones sensibles.
+- Alta/edición de productos y fotos, disponibilidad y código de barras real de teclado. Configuración de negocio, impresora y papel de 58/80 mm.
+- Respaldos consistentes con la API SQLite: hasta 288 recientes, 30 diarios y 12 semanales; destino externo adicional y restauración validada desde interfaz con copia previa.
+- Instancia única por base; instalador y publicación no sobrescriben una entrega en ejecución.
 
-## Primer uso
+Consulta el [manual de cajero y administrador](MANUAL-OPERACION.md) para procedimientos, atajos y condiciones de restauración/devolución.
 
-1. Crea el administrador y una contraseña de al menos ocho caracteres. No hay contraseña predeterminada.
-2. En **Productos y precios** puedes editar menudeo y mayoreo, con motivo y contraseña. No es necesario registrar existencias: las advertencias rojas son informativas y permiten vender.
-3. Abre **Caja** y registra el fondo inicial.
-4. En **Venta**, busca por sabor o categoría y pulsa productos para agregarlos. Usa «− Una» para reducir la partida seleccionada.
-5. El precio cambia automáticamente a mayoreo desde 10 piezas del mismo producto o $400 valorados a menudeo. Los sabores diferentes de la misma gama se suman para alcanzar 10, también en cobro normal. En esquimales se cuenta por presentación.
-6. Puedes aplicar un descuento porcentual general autorizado; en esta versión solo afecta partidas a menudeo.
-7. Pulsa **Cobrar** y elige efectivo, tarjeta o mixto. Selecciona un importe sugerido o escribe con cuánto paga el cliente; revisa el cambio antes de confirmar. Los pagos con tarjeta requieren confirmar su autorización en una terminal externa.
-8. Consulta ventas y reimprime desde **Historial y reportes**. El CSV contiene las últimas 1,000 ventas, al igual que esa pantalla.
-9. Al terminar, cierra caja e introduce el efectivo contado.
-10. Genera un respaldo en una carpeta o USB desde **Respaldo**.
+## Datos y privacidad
 
-## Datos y seguridad
+SQLite usa WAL, claves foráneas y `synchronous=FULL`. El dinero se calcula en decimal y se almacena en centavos enteros. Ventas, partidas y movimientos se confirman en una transacción. Las contraseñas utilizan PBKDF2 SHA-256, salt aleatorio y 600,000 iteraciones; no se guardan en borradores.
 
-Base de datos: `%LOCALAPPDATA%\PinwiPOS\pinwi.db`. La instalación y los datos están separados. El catálogo contiene 76 productos reales, todos inicialmente sin existencias. Las imágenes de categoría se incluyen localmente.
+No subir cuentas, contraseñas, bases, respaldos, ventas, cortes ni gastos de operación o prueba. `dist`, `artifacts`, `.tools` y binarios permanecen ignorados. El catálogo comercial y las imágenes/procedencia sí se versionan. Las pruebas crean datos ficticios temporales aislados.
 
-La venta y sus partidas se guardan transaccionalmente junto con la salida de existencias. Un identificador evita duplicados por reintentos. Un fallo de impresión no borra la venta. Las contraseñas se almacenan con PBKDF2 SHA-256, salt aleatorio y 600,000 iteraciones.
+WhatsApp prepara una nota para envío manual con internet y confirmación manual; no hay envío desatendido ni entrega remota verificada. Resultado de ventas menos gastos no equivale a utilidad contable.
 
-La primera versión admite únicamente el administrador. No compartas su contraseña para simular cuentas de cajero. Los respaldos `.db` contienen los datos del negocio y deben guardarse en un lugar de confianza.
+## Compilar y validar
 
-## Disponible
-
-- Catálogo de 76 productos con fotografías de categoría locales, búsqueda y filtro.
-- Precios de menudeo/mayoreo y ajuste automático por cantidad o monto.
-- Descuento porcentual general autorizado, excluyendo mayoreo.
-- Edición de precios y captura de existencia con bitácora.
-- Apertura y cierre de caja, efectivo esperado y diferencia.
-- Cobros en efectivo, tarjeta externa y mixtos; cambio y aviso de inventario sin bloqueo.
-- Persistencia SQLite, historial, vista de ticket, impresión mediante Windows y exportación CSV.
-- Respaldo consistente mediante la API de SQLite.
-
-## Pendiente del alcance completo
-
-- Roles y cuentas de cajero, cambio y bloqueo de sesión.
-- Descuentos fijos y por partida, configuración de acumulación y umbrales.
-- Cancelaciones, devoluciones, gestión de varias ventas pendientes y domicilio. El carrito actual ya se recupera automáticamente.
-- Alta y desactivación de productos, códigos de barras, modificadores, unidades por peso y recetas.
-- Movimientos de inventario detallados, costos, mermas y mínimos.
-- Entradas/salidas de efectivo. El historial visual de cortes ya está disponible.
-- Reportes por rango, sabores, cajeros y utilidades.
-- Configuración fiscal y datos del negocio; otros datos fiscales del negocio.
-- Restauración desde la interfaz y fotografías personalizadas. Los respaldos automáticos ya están disponibles.
-- Migraciones futuras con respaldo previo y actualizaciones empaquetadas.
-- Validación completa del flujo en la interfaz, operación en un equipo limpio desconectado e impresión física.
-
-La ventana inicial se verificó visualmente. No se creó una cuenta real ni se ingresaron ventas de prueba en la base de operación. La lógica de ventas se probó con una base temporal aislada. No presentar esta versión como el alcance completo listo para producción.
-
-## Desarrollo
-
-Requiere SDK .NET 10 y acceso a NuGet para restaurar dependencias durante el desarrollo.
-
-GitHub Actions compila y ejecuta las pruebas de lógica en Windows. Si el flujo termina correctamente, publica un artefacto de aplicación **sin firma** y el registro de pruebas; eso no equivale a aprobación de Smart App Control ni valida impresión física.
+Requiere SDK .NET 10 y NuGet durante el desarrollo. El programa publicado incluye su runtime. En este equipo el SDK por usuario está en `%LOCALAPPDATA%/Microsoft/dotnet/dotnet.exe`.
 
 ```powershell
-dotnet build src/Pinwi.Pos -c Release
 dotnet run --project tests/Pinwi.Tests -c Release
+dotnet run --project tests/Pinwi.Tests -c Release -- --render
 ./scripts/publish.ps1
 ```
 
-Si el SDK se instaló con el script oficial por usuario, está en `%LOCALAPPDATA%\Microsoft\dotnet\dotnet.exe`. `publish.ps1` detecta esa ubicación.
+El script genera la entrega y guarda `artifacts/pruebas-operacion.txt`. `--ui` pertenece solo a las pruebas y abre PRUEBA AISLADA con una base temporal, sin usar datos del negocio. GitHub Actions compila, prueba y produce un paquete sin firma; eso no verifica impresoras ni significa aprobación de Store.
 
-Las pruebas verifican 11 escenarios de precios y el flujo de persistencia con catálogo, autenticación, inventario, caja, idempotencia, rollback y respaldo. Sus datos se guardan en una carpeta única bajo `%TEMP%\PinwiTests`, separada de la operación.
+## Pendiente
 
-## Actualización: cobro y ticket del cliente
-
-El ticket incluye logo local, agradecimiento, Facebook y WhatsApp con iconos. Se puede elegir papel de 58 u 80 mm en la vista previa. El historial y CSV incluyen el usuario real de sesión; por ahora el acceso sigue siendo del administrador existente, no hay cuentas separadas de cajeros. Las ventas anteriores sin nombre muestran «No registrado».
-
-La base actual usa la versión 7, que incluye gastos, paquetes, fotos personalizadas y cobro rápido, conservando datos y creando un respaldo previo en la carpeta Respaldos. Cierra la versión anterior antes de abrir la actualizada. La impresión física todavía debe probarse con la impresora real.
-
-## Actualización: cortes y autoguardado
-
-El carrito incluye imágenes y se guarda automáticamente al modificarlo. La pantalla de Caja conserva los cortes y genera una nota y CSV con las ventas del día al cierre. Cada cinco minutos, incluso sin cambios, y después de modificaciones se crean respaldos consistentes (hasta 288 copias).
-
-«Enviar por WhatsApp» abre una nota dirigida al número del negocio. Requiere internet y pulsar Enviar en WhatsApp; no hay envío desatendido ni adjunto automático. La nota queda pendiente hasta confirmación manual. Consulta [detalles de cortes y respaldos](CAMBIOS-CORTES-Y-RESPALDOS.md).
+Impresión física de 58/80 mm, lector físico, instalación completa en un segundo Windows limpio sin internet y revisión manual de todas las combinaciones administrativas. Inventario avanzado con costos/recetas/mermas, domicilio y configuración fiscal quedan pendientes. No presentar el alcance completo de AGENTS.md como terminado.

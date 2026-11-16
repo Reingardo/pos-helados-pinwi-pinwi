@@ -10,18 +10,22 @@ public static class ReceiptBuilder
 {
  public static FlowDocument Create(string receipt,double width=302)
  {
+  var snapshot=ReceiptBrand.Read(receipt);receipt=snapshot.Body;var brand=snapshot.Brand;
   var doc=new FlowDocument{PageWidth=width,ColumnWidth=width,PagePadding=new Thickness(10),FontFamily=new FontFamily("Segoe UI"),FontSize=11,Background=Brushes.White,Foreground=Brushes.Black};
   var logo=new BitmapImage();logo.BeginInit();logo.CacheOption=BitmapCacheOption.OnLoad;logo.UriSource=new Uri(Path.Combine(AppContext.BaseDirectory,"Assets","Brand","logo-pinwi.png"));logo.EndInit();logo.Freeze();
   doc.Blocks.Add(new BlockUIContainer(new Image{Source=logo,Width=Math.Min(150,width-30),Height=Math.Min(150,width-30),Stretch=Stretch.Uniform,HorizontalAlignment=HorizontalAlignment.Center}){Margin=new Thickness(0,0,0,8)});
   var body=receipt.Replace("\r\n","\n").Split('\n').ToList();
-  if(body.Count>1&&body[0]=="HELADOS PINWI PINWI"){body.RemoveAt(0);if(body[0]=="833 393 2616")body.RemoveAt(0);}
+  doc.Blocks.Add(new Paragraph(new Bold(new Run(brand.Name))){TextAlignment=TextAlignment.Center});
+  if(brand.Address.Length>0)doc.Blocks.Add(new Paragraph(new Run(brand.Address)){TextAlignment=TextAlignment.Center});
+  if(body.Count>1&&(body[0]=="HELADOS PINWI PINWI"||body[0]==brand.Name.ToUpperInvariant())){body.RemoveAt(0);body.RemoveAt(0);}
   var footer=body.FindIndex(x=>x.StartsWith("¡Gracias por tu compra!")||x.StartsWith("¡Muchas gracias por su compra!"));if(footer>=0)body=body.Take(footer).ToList();
   foreach(var line in body){var p=new Paragraph(new Run(line)){Margin=new Thickness(0,0,0,3)};if(line.StartsWith("TOTAL:")||line.StartsWith("Cambio:")){p.FontWeight=FontWeights.Bold;p.FontSize=14;p.Margin=new Thickness(0,8,0,6);}doc.Blocks.Add(p);}
   doc.Blocks.Add(new Paragraph(new Run("────────────────────")){TextAlignment=TextAlignment.Center,Margin=new Thickness(0,8,0,8)});
   doc.Blocks.Add(new Paragraph(new Bold(new Run("¡Muchas gracias por su compra!"))){TextAlignment=TextAlignment.Center,Margin=new Thickness(0,0,0,8)});
   doc.Blocks.Add(new Paragraph(new Run("Cualquier sugerencia, estamos a la orden.")){TextAlignment=TextAlignment.Center,Margin=new Thickness(0,0,0,12)});
-  doc.Blocks.Add(Contact("facebook","facebook.com/heladospinwi","https://www.facebook.com/heladospinwi"));
-  doc.Blocks.Add(Contact("whatsapp","833 393 2616","https://wa.me/528333932616"));
+  if(brand.Facebook.Length>0)doc.Blocks.Add(Contact("facebook",brand.Facebook,brand.Facebook.StartsWith("https://",StringComparison.OrdinalIgnoreCase)?brand.Facebook:"https://"+brand.Facebook));
+  var digits=new string(brand.Phone.Where(char.IsAsciiDigit).ToArray());if(digits.Length==10)digits="52"+digits;
+  if(brand.Phone.Length>0)doc.Blocks.Add(Contact("whatsapp",brand.Phone,"https://wa.me/"+digits));
   doc.Blocks.Add(new Paragraph(new Run("Comprobante de venta")){TextAlignment=TextAlignment.Center,FontSize=9,Margin=new Thickness(0,12,0,0)});
   return doc;
  }

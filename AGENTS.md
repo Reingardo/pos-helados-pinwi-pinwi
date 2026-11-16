@@ -2,6 +2,16 @@
 
 ## Estado vigente — 16 de noviembre de 2026
 
+**Entrega posterior: Operación Segura 1.1.1.0, SQLite v8.** Esta actualización prevalece sobre las referencias v7 y ProductosCobroRapido inferiores. Leer `ESTADO-OPERACION-V8.md` y `MANUAL-OPERACION.md`.
+
+- Entrega local nueva: `dist/OperacionSegura-v111/PinwiPOS/Pinwi.Pos.exe`; ZIP `dist/PinwiPOS-OperacionSegura-v111.zip`. Cerrar la versión anterior antes de abrirla. La migración a v8 crea respaldo previo; nunca abrir ejecutables antiguos sobre la base v8.
+- Se agregaron restauración desde UI validada con copia previa, instancia única, cuentas/roles y bloqueo de sesión, devoluciones/cancelación a precio histórico, entradas/retiros, descuentos fijos/por partida, pendientes por usuario, reportes por periodo paginados y exportaciones completas, configuración y disponibilidad/códigos de barras.
+- Respaldos: 288 recientes, 30 diarios y 12 semanales, con destino adicional configurable. Cajero consulta/exporta sus propias operaciones; cambios sensibles requieren autorización en la lógica. Fotos y reglas de venta se conservan.
+- Las pruebas nuevas usan bases temporales y verifican restauración real aislada, pagos mixtos/devoluciones por centavos, rollback, caja, roles, reportes superiores a 1,000 operaciones y fallo de copia externa. Revisión interactiva aislada de venta/cobro/ticket/reportes y renders administrativos. No afirmar una revisión manual de todas las combinaciones ni impresión física verificada.
+- Continúan pendientes impresión/lector físicos, instalación en segundo equipo limpio desconectado, inventario avanzado, domicilio y configuración fiscal. La prioridad sigue siendo local; no continuar Store ni cambiar seguridad del equipo.
+
+### Estado anterior de ProductosCobroRapido (histórico)
+
 Esta sección y las decisiones posteriores del usuario prevalecen sobre las notas históricas y los requisitos iniciales en conflicto.
 
 - Repositorio independiente: https://github.com/Reingardo/pos-helados-pinwi-pinwi, rama main. No trabajar en el repositorio padre ni modificar la web de referencia.

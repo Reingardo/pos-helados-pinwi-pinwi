@@ -1,5 +1,6 @@
 using Pinwi.Pos;
 System.Globalization.CultureInfo.DefaultThreadCurrentCulture=System.Globalization.CultureInfo.GetCultureInfo("es-MX");
+System.Windows.FrameworkElement.LanguageProperty.OverrideMetadata(typeof(System.Windows.FrameworkElement),new System.Windows.FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage("es-MX")));
 if(args.Contains("--render"))
 {
  var thread=new Thread(()=>{
@@ -25,9 +26,13 @@ if(args.Contains("--render"))
   previewStore.CloseShift(44000);
   var productForm=new ProductWindow(previewStore,previewStore.Products().First());Render(productForm,"editar-producto.png");
   var newProductForm=new ProductWindow(previewStore);Render(newProductForm,"nuevo-producto.png");
-  var main=new MainWindow(previewStore);var previewFlags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;main.Loaded-=(System.Windows.RoutedEventHandler)Delegate.CreateDelegate(typeof(System.Windows.RoutedEventHandler),main,typeof(MainWindow).GetMethod("LoadedWindow",previewFlags)!);typeof(MainWindow).GetField("ready",previewFlags)!.SetValue(main,true);typeof(MainWindow).GetMethod("Reload",previewFlags)!.Invoke(main,null);
+  Render(new SettingsWindow(previewStore),"configuracion.png");Render(new UserWindow(previewStore),"usuario.png");Render(new LoginWindow(previewStore),"sesion.png");Render(new ReturnWindow(previewStore,previewStore.Sales()[0].Folio),"devolucion.png");var discountVm=new SaleViewModel();discountVm.Cart.AddRange(sampleCart);discountVm.Refresh();Render(new DiscountWindow(previewStore,discountVm),"descuentos.png");
+  var main=new MainWindow(previewStore){Height=768};var previewFlags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;main.Loaded-=(System.Windows.RoutedEventHandler)Delegate.CreateDelegate(typeof(System.Windows.RoutedEventHandler),main,typeof(MainWindow).GetMethod("LoadedWindow",previewFlags)!);typeof(MainWindow).GetField("ready",previewFlags)!.SetValue(main,true);typeof(MainWindow).GetMethod("Reload",previewFlags)!.Invoke(main,null);
   var previewVm=(SaleViewModel)typeof(MainWindow).GetField("vm",previewFlags)!.GetValue(main)!;previewVm.Cart.AddRange(sampleCart);previewVm.Refresh();
   Render(main,"venta.png",false);typeof(MainWindow).GetMethod("OpenQuickSales",previewFlags)!.Invoke(main,new object[]{main,new System.Windows.RoutedEventArgs()});previewVm.Cart.Clear();typeof(MainWindow).GetMethod("AddProduct",previewFlags)!.Invoke(main,new object[]{new System.Windows.Controls.Button{Tag=previewStore.Products().Single(p=>p.QuickGroup=="bolis")},new System.Windows.RoutedEventArgs()});previewVm.SetQuantity(previewVm.Cart.Single().Product.Id,10);if(previewVm.TotalCents!=5000)throw new Exception("UI rápida no agrega gama o recalcula mayoreo");Render(main,"cobro-rapido.png",false);previewVm.Cart.Clear();previewVm.Cart.AddRange(sampleCart);previewVm.Refresh();typeof(MainWindow).GetField("activeCategory",previewFlags)!.SetValue(main,"Paquetes");typeof(MainWindow).GetMethod("Filter",previewFlags)!.Invoke(main,null);Render(main,"paquetes.png",false);((System.Windows.Controls.DockPanel)main.Content).Children.OfType<System.Windows.Controls.TabControl>().Single().SelectedIndex=2;Render(main,"cortes.png",false);((System.Windows.Controls.TabControl)main.FindName("CashViews")).SelectedIndex=1;Render(main,"gastos-dia.png");
+  previewStore.SetProductAvailability(1,false,"",previewPassword,"Prueba de pendiente desactivado");previewStore.SaveDraft(new(Guid.NewGuid().ToString(),previewStore.CurrentUserName!,[new(1,2)],0,"",DateTimeOffset.Now.ToString("O")));
+  var recoveryMain=new MainWindow(previewStore);recoveryMain.Loaded-=(System.Windows.RoutedEventHandler)Delegate.CreateDelegate(typeof(System.Windows.RoutedEventHandler),recoveryMain,typeof(MainWindow).GetMethod("LoadedWindow",previewFlags)!);typeof(MainWindow).GetField("ready",previewFlags)!.SetValue(recoveryMain,true);typeof(MainWindow).GetMethod("Reload",previewFlags)!.Invoke(recoveryMain,null);typeof(MainWindow).GetMethod("RestoreCart",previewFlags)!.Invoke(recoveryMain,null);
+  var recoveredVm=(SaleViewModel)typeof(MainWindow).GetField("vm",previewFlags)!.GetValue(recoveryMain)!;if(recoveredVm.Cart.Single().Quantity!=2||recoveredVm.Cart.Single().Product.Active||!recoveredVm.Lines.Single().StockWarning.Contains("desactivado"))throw new Exception("El pendiente perdió un producto desactivado");Render(recoveryMain,"pendiente-desactivado.png");Console.WriteLine("OK UI conserva productos desactivados en pendientes y pide revisión");
   Console.WriteLine("Vistas renderizadas en "+output);
  });thread.SetApartmentState(ApartmentState.STA);thread.Start();thread.Join();return;
 }
@@ -35,11 +40,13 @@ if(args.Contains("--ui"))
 {
  var thread=new Thread(()=>{
   var app=new System.Windows.Application{ShutdownMode=System.Windows.ShutdownMode.OnExplicitShutdown}; var xml=System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(AppContext.BaseDirectory,"Theme.xaml")); var root=new System.Xml.Linq.XElement(System.Xml.Linq.XName.Get("ResourceDictionary","http://schemas.microsoft.com/winfx/2006/xaml/presentation"), new System.Xml.Linq.XAttribute(System.Xml.Linq.XNamespace.Xmlns+"x","http://schemas.microsoft.com/winfx/2006/xaml"),xml.Root!.Elements().First().Elements()); app.Resources=(System.Windows.ResourceDictionary)System.Windows.Markup.XamlReader.Parse(root.ToString());
-  var w=new MainWindow(new Store(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiPreview",Guid.NewGuid().ToString("N"))));var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+  var isolated=new Store(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiPreview",Guid.NewGuid().ToString("N")));var isolatedPassword=Guid.NewGuid().ToString();isolated.CreateAdmin("Prueba visual",isolatedPassword);isolated.SignIn(isolatedPassword);isolated.OpenShift(50000);var isolatedProduct=isolated.Products().Single(x=>x.QuickGroup=="bolis");isolated.Checkout([new(isolatedProduct,10)],0,10000,0,Guid.NewGuid().ToString(),"","");
+  var w=new MainWindow(isolated){Title="PRUEBA AISLADA · Helados Pinwi Pinwi"};var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
   var handler=(System.Windows.RoutedEventHandler)Delegate.CreateDelegate(typeof(System.Windows.RoutedEventHandler),w,typeof(MainWindow).GetMethod("LoadedWindow",flags)!);
   w.Loaded-=handler;
   typeof(MainWindow).GetField("ready",flags)!.SetValue(w,true);
   typeof(MainWindow).GetMethod("Reload",flags)!.Invoke(w,null);
+  ((System.Windows.Controls.CheckBox)w.FindName("AutoWhatsApp")).IsChecked=false;
   w.Closed+=(_,_)=>System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown(); w.Show();System.Windows.Threading.Dispatcher.Run();
  });thread.SetApartmentState(ApartmentState.STA);thread.Start();thread.Join();return;
 }
@@ -71,8 +78,8 @@ var upgradeFolder=System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiTest
 var upgradeStore=new Store(upgradeFolder);
 using(var db=new Microsoft.Data.Sqlite.SqliteConnection("Data Source="+upgradeStore.DatabasePath)){db.Open();using var q=db.CreateCommand();q.CommandText="DELETE FROM products WHERE category='Paquetes'; UPDATE products SET retail=777,wholesale=555 WHERE id=1; PRAGMA user_version=4;";q.ExecuteNonQuery();}
 upgradeStore=new Store(upgradeFolder);
-if(upgradeStore.Products().Count!=88 || upgradeStore.Products()[0].Retail!=777 || new Store(upgradeFolder).Products().Count!=88 || !System.IO.Directory.GetFiles(System.IO.Path.Combine(upgradeFolder,"Respaldos"),"antes-v7-*.db").Any())throw new Exception("Migración de paquetes no conserva precios, respaldo o idempotencia");
-Console.WriteLine("OK migración antigua a v7: cinco paquetes y siete gamas, precios previos y respaldo conservados");
+if(upgradeStore.Products().Count!=88 || upgradeStore.Products()[0].Retail!=777 || new Store(upgradeFolder).Products().Count!=88 || !System.IO.Directory.GetFiles(System.IO.Path.Combine(upgradeFolder,"Respaldos"),"antes-v8-*.db").Any())throw new Exception("Migración de paquetes no conserva precios, respaldo o idempotencia");
+Console.WriteLine("OK migración antigua a v8: cinco paquetes y siete gamas, precios previos y respaldo conservados");
 var password=Guid.NewGuid().ToString();
 store.CreateAdmin("Prueba",password);if(!store.SignIn(password))throw new Exception("No inició sesión");
 if(!store.Authenticate(password)||store.Authenticate("incorrecta"))throw new Exception("Autenticación inválida");
@@ -111,7 +118,7 @@ var migrated=new Store(migrationFolder);
 if(migrated.Sales().Count!=2||migrated.Sales().Any(x=>x.Cashier!="No registrado")||migrated.Products().Count!=88)throw new Exception("Migración perdió datos o atribuyó un cajero falso");
 if(System.IO.Directory.GetFiles(System.IO.Path.Combine(migrationFolder,"Respaldos"),"*.db").Length!=1)throw new Exception("Migración sin respaldo previo");
 if(new Store(migrationFolder).Sales().Count!=2)throw new Exception("Migración no idempotente");
-Console.WriteLine("OK migración v1 a v7 con respaldo, ventas históricas y usuario no registrado");
+Console.WriteLine("OK migración v1 a v8 con respaldo, ventas históricas y usuario no registrado");
 var draftToken=Guid.NewGuid().ToString();
 store.SaveDraft(new(draftToken,"Prueba",[new(1,7)],10,"Cliente frecuente",DateTimeOffset.Now.ToString("O")));
 var reopened=new Store(testFolder);reopened.SignIn(password);var recovered=reopened.LoadDraft();
@@ -200,3 +207,4 @@ var otherGroup=quickPaletas with{Retail=34000,Wholesale=30000};
 Check("Umbral global exacto con varias gamas",35000,[new(lemon,5),new(pineapple,5),new(otherGroup,1)]);
 Check("Al quitar consumo conserva solo gama con diez",7700,[new(lemon,5),new(pineapple,5),new(quickPaletas with{Retail=2700,Wholesale=2500},1)]);
 Console.WriteLine("OK recálculo por gama al quitar cantidades y al bajar del umbral global");
+ImprovementsTests.Run();

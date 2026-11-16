@@ -24,7 +24,7 @@ public sealed partial class Store
   var shift=Cmd(c,"SELECT id FROM shifts WHERE closed IS NULL").ExecuteScalar()??throw new Exception("Abre caja antes de registrar un gasto.");
   if(source=="Caja")
   {
-   var available=Convert.ToInt64(Cmd(c,"SELECT (SELECT fund FROM shifts WHERE id=@p0)+COALESCE((SELECT SUM(cash) FROM sales WHERE shift=@p0),0)-COALESCE((SELECT SUM(amount) FROM expenses WHERE shift=@p0 AND source='Caja'),0)",shift).ExecuteScalar());
+   var available=ExpectedCash(c,Convert.ToInt64(shift));
    if(amount>available)throw new Exception("El gasto supera el efectivo esperado en caja. Revisa el importe o selecciona pago externo si se pagó con otro dinero.");
   }
   var now=DateTimeOffset.Now.ToString("O");Cmd(c,"INSERT INTO expenses(token,date,shift,cashier,concept,recipient,amount,source) VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)",token,now,shift,CurrentUserName,concept,recipient,amount,source).ExecuteNonQuery();

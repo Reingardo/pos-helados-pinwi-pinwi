@@ -4,6 +4,8 @@ using System.Windows.Media.Imaging;
 namespace Pinwi.Pos;
 public sealed partial class Store
 {
+ Dictionary<int,string>? photoPaths;
+ void InvalidatePhotos()=>photoPaths=null;
  public static byte[] PrepareProductImage(string path)
  {
   if(new FileInfo(path).Length>20*1024*1024)throw new Exception("Elige una imagen de hasta 20 MB.");
@@ -29,17 +31,27 @@ public sealed partial class Store
   else{Cmd(c,"INSERT INTO products(category,name,retail,wholesale,stock,image) VALUES(@p0,@p1,@p2,@p3,0,'Brand/logo-pinwi.png')",category,name,retail,wholesale).ExecuteNonQuery();saved=Convert.ToInt32(Cmd(c,"SELECT last_insert_rowid()").ExecuteScalar());}
   if(id!=null)Cmd(c,"UPDATE quick_products SET ready=1 WHERE product=@p0",saved).ExecuteNonQuery();
   if(photo!=null)Cmd(c,"INSERT INTO product_photos(product,image) VALUES(@p0,@p1) ON CONFLICT(product) DO UPDATE SET image=excluded.image",saved,photo).ExecuteNonQuery();
-  Cmd(c,"INSERT INTO audit(date,action) VALUES(@p0,@p1)",DateTimeOffset.Now.ToString("O"),$"Usuario {CurrentUserName}. {(id==null?"Alta":"Edición")} producto {saved}: {category} — {name}. Menudeo {retail}, mayoreo {wholesale}, foto nueva {photo!=null}. {reason}").ExecuteNonQuery();t.Commit();NotifyChanged();return saved;
+  Cmd(c,"INSERT INTO audit(date,action) VALUES(@p0,@p1)",DateTimeOffset.Now.ToString("O"),$"Usuario {CurrentUserName}. {(id==null?"Alta":"Edición")} producto {saved}: {category} — {name}. Menudeo {retail}, mayoreo {wholesale}, foto nueva {photo!=null}. {reason}").ExecuteNonQuery();t.Commit();InvalidatePhotos();NotifyChanged();return saved;
  }
  List<Product> LoadProductPhotos(List<Product> products)
  {
+  if(photoPaths!=null&&photoPaths.Values.All(File.Exists))return products.Select(p=>photoPaths.TryGetValue(p.Id,out var path)?p with{CustomImagePath=path}:p).ToList();
+  photoPaths=new();
   using var c=Open();using var r=Cmd(c,"SELECT product,image FROM product_photos").ExecuteReader();
   while(r.Read())
   {
    var id=r.GetInt32(0);var bytes=(byte[])r[1];var directory=Path.Combine(DirectoryPath,"Imagenes");Directory.CreateDirectory(directory);
    var path=Path.Combine(directory,Convert.ToHexString(SHA256.HashData(bytes))+".png");if(!File.Exists(path))File.WriteAllBytes(path,bytes);
-   var index=products.FindIndex(p=>p.Id==id);if(index>=0)products[index]=products[index] with {CustomImagePath=path};
+   photoPaths[id]=path;var index=products.FindIndex(p=>p.Id==id);if(index>=0)products[index]=products[index] with {CustomImagePath=path};
   }
   return products;
+ }
+ public void SetProductAvailability(int id,bool active,string barcode,string password,string reason)
+ {
+  RequireAdmin(password);barcode=barcode.Trim();
+  if(barcode.Length>80||barcode.Any(char.IsControl)||string.IsNullOrWhiteSpace(reason))throw new Exception("Revisa código de barras y motivo.");
+  using var c=Open();using var t=c.BeginTransaction();
+  if(Cmd(c,"UPDATE products SET active=@p1,barcode=@p2 WHERE id=@p0",id,active,barcode).ExecuteNonQuery()!=1)throw new Exception("Producto no encontrado.");
+  Cmd(c,"INSERT INTO audit(date,action) VALUES(@p0,@p1)",DateTimeOffset.Now.ToString("O"),$"{CurrentUserName}: producto {id}, activo {active}, código {barcode}. {reason}").ExecuteNonQuery();t.Commit();NotifyChanged();
  }
 }
