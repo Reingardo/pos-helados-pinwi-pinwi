@@ -1,5 +1,7 @@
 # Contexto para continuar el POS
 
+**Última actualización:** la versión anterior de `dist/Actualizacion` se cerraba al inicio porque la base ya requiere una versión más reciente, según el registro de .NET. Se inició el ejecutable de `dist/Gastos/PinwiPOS` y se corrigieron los accesos directos para apuntar allí, sin alterar seguridad ni datos. No ofrecer nuevamente el enlace anterior para esta base. La apertura del proceso está confirmada; la revisión completa de UI e impresión sigue pendiente. Las notas de firma inferiores conservan la historia de intentos previos.
+
 Actualizado el 16 de noviembre de 2026. El usuario continuará en otra sesión. Leer este archivo, `AGENTS.md`, `README.md` y `ESTADO-PRUEBAS-GASTOS.md` antes de realizar cambios.
 
 ## Producto y decisiones del usuario

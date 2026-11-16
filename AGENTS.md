@@ -2,6 +2,8 @@
 
 ## Leer primero al retomar otra sesión
 
+**Actualización posterior importante:** el enlace anterior a `dist/Actualizacion` dejó de abrir porque la base local ya requiere la versión nueva. El registro de .NET confirmó «Esta base requiere una versión más reciente del POS». Se inició correctamente el ejecutable existente de `dist/Gastos/PinwiPOS/Pinwi.Pos.exe`, sin cambiar seguridad ni borrar/revertir la base. Los accesos directos del escritorio ahora apuntan a `dist/Gastos`. Esto verifica el inicio del proceso, no todo el flujo de gastos o impresión. No volver a proporcionar el enlace al ejecutable anterior para esta base. Las notas históricas de bloqueo de firma que siguen abajo describen los intentos previos.
+
 **Contexto guardado el 16 de noviembre de 2026. El usuario continuará en otra sesión.** Este es el proyecto de escritorio del POS; su repositorio es independiente de la web de la heladería.
 
 - **GitHub público:** https://github.com/Reingardo/pos-helados-pinwi-pinwi
