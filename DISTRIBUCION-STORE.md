@@ -67,3 +67,12 @@ Se actualizaron descripción, novedades y descripción corta de la ficha es-MX, 
 Se comprobó la opción «Don't publish this submission until I select Publish now». Se pulsó Submit for certification y el portal confirmó **In certification**, Submission Complete, Pre-processing In progress, Certification Not started y Publishing Not started. El aviso indica que la publicación comenzará solo al seleccionar Publish now. No se pulsó ese botón, no está publicado y no se obtuvo todavía un paquete firmado instalable. El EXE/DLL locales continúan sin firma. La base de operación y la entrega local no se instalaron ni sustituyeron durante este trámite.
 
 Continuar desde https://partner.microsoft.com/en-us/dashboard/products/9N0ZB1RQ1RTR/overview. Mantener publicación retenida; no confundir Validated o In certification con aprobación, firma disponible o publicación.
+
+
+## Autorización posterior para publicar — 16 de noviembre de 2026
+
+El usuario indicó expresamente «publicalo», reemplazando la retención manual anterior. Se revisó el producto 9N0ZB1RQ1RTR en Chrome, perfil edgar. La versión enviada continúa en certificación: Certification In progress y Publishing Not started; todavía no hay disponibilidad pública confirmada.
+
+Tras revisar Modify publishing time, el portal mostró «Your product will start publishing as soon as it passes certification». Se recargó la página y se confirmó que esa configuración persistía. Por tanto, la publicación comenzará automáticamente cuando Microsoft apruebe; no hace falta mantener el freno manual histórico. No se pulsó un botón Publish now habilitado ni se afirmó una publicación ya completada.
+
+Evidencia local ignorada: `artifacts/store-v111-publicacion-automatica.jpg`. La aprobación, el inicio efectivo de Publishing y la disponibilidad en Store siguen pendientes de Microsoft. No modificar ni cancelar esta autorización sin nueva indicación del usuario.

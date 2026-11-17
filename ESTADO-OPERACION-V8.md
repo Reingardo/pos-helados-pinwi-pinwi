@@ -1,6 +1,6 @@
 # Entrega Operación Segura — 16 de noviembre de 2026
 
-Código de aplicación 1.1.1.0, SQLite v8. Entrega local en `dist/OperacionSegura-v111/PinwiPOS`; ZIP `dist/PinwiPOS-OperacionSegura-v111.zip`. No publicar en Store sin una nueva indicación del usuario.
+Código de aplicación 1.1.1.0, SQLite v8. Entrega local en `dist/OperacionSegura-v111/PinwiPOS`; ZIP `dist/PinwiPOS-OperacionSegura-v111.zip`. El usuario autorizó después la publicación en Store; está configurada para comenzar automáticamente tras aprobar la certificación.
 
 ## Cambios
 
@@ -33,4 +33,4 @@ No equivale a una revisión manual de todas las combinaciones de formularios adm
 
 Inventario avanzado, costos, recetas, mermas, domicilio y configuración fiscal quedan fuera de esta entrega. El POS sigue vendiendo sin bloqueo de existencias, con avisos informativos. WhatsApp sigue requiriendo envío manual.
 
-Por indicación posterior del usuario, Microsoft Store recibió el paquete 1.1.1.0 y se reenvió a certificación, con publicación manual retenida. No afirmar firma, certificación aprobada ni disponibilidad pública. Binarios, bases, cuentas, respaldos y evidencia de pruebas son locales e ignorados por Git.
+Por indicación posterior del usuario, Microsoft Store recibió el paquete 1.1.1.0 y se reenvió a certificación. Luego autorizó publicarlo: el portal confirma publicación automática tras aprobación. Todavía no hay disponibilidad pública confirmada. No afirmar firma, certificación aprobada ni disponibilidad pública. Binarios, bases, cuentas, respaldos y evidencia de pruebas son locales e ignorados por Git.

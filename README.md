@@ -2,7 +2,7 @@
 
 Aplicación de escritorio local en C# / .NET 10, WPF y SQLite. Funciona sin internet y conserva menú, imágenes, precios, ventas y fotos en el equipo del negocio. Repositorio independiente: https://github.com/Reingardo/pos-helados-pinwi-pinwi.
 
-**Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. Microsoft Store tiene la 1.1.1.0 enviada a certificación y la publicación manual retenida; no publicar sin una nueva indicación.
+**Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. Microsoft Store tiene la 1.1.1.0 en certificación. Por autorización posterior del usuario, comenzará a publicarse automáticamente cuando Microsoft la apruebe; todavía no se confirma disponibilidad pública.
 
 ## Abrir o actualizar
 
