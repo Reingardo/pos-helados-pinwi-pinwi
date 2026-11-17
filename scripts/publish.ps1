@@ -13,8 +13,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Fallaron las pruebas; no se generó la entrega
 & $dotnet publish "$repo\src\Pinwi.Pos" -c Release -r win-x64 --self-contained true -o $output
 if ($LASTEXITCODE -ne 0) { throw 'Falló la publicación local.' }
 Copy-Item -LiteralPath "$PSScriptRoot\Instalar.ps1" -Destination (Join-Path $package 'Instalar.ps1') -Force
-Copy-Item -LiteralPath "$repo\README.md","$repo\MANUAL-OPERACION.md","$repo\ESTADO-OPERACION-V8.md" -Destination $package -Force
+Copy-Item -LiteralPath "$repo\README.md","$repo\MANUAL-OPERACION.md","$repo\MANUAL-INSTALACION.md","$repo\ESTADO-OPERACION-V8.md" -Destination $package -Force
 $archive = Join-Path $repo "dist\PinwiPOS-$Delivery.zip"
-Compress-Archive -LiteralPath $output,(Join-Path $package 'Instalar.ps1'),(Join-Path $package 'README.md'),(Join-Path $package 'MANUAL-OPERACION.md'),(Join-Path $package 'ESTADO-OPERACION-V8.md') -DestinationPath $archive -Force
+$packageItems = @($output,(Join-Path $package 'Instalar.ps1'),(Join-Path $package 'README.md'),(Join-Path $package 'MANUAL-OPERACION.md'),(Join-Path $package 'MANUAL-INSTALACION.md'),(Join-Path $package 'ESTADO-OPERACION-V8.md'))
+$installationPdf = Join-Path $repo 'output\pdf\PinwiPOS-Manual-Instalacion.pdf'
+if (Test-Path -LiteralPath $installationPdf) {
+  $installationCopy = Join-Path $package 'Manual-Instalacion-PinwiPOS.pdf'
+  Copy-Item -LiteralPath $installationPdf -Destination $installationCopy -Force
+  $packageItems += $installationCopy
+}
+Compress-Archive -LiteralPath $packageItems -DestinationPath $archive -Force
 Write-Host "Entrega local: $output"
 Write-Host "Paquete sin firma: $archive"

@@ -27,7 +27,7 @@ Una instalación limpia crea al primer administrador sin credenciales predetermi
 - Respaldos consistentes con la API SQLite: hasta 288 recientes, 30 diarios y 12 semanales; destino externo adicional y restauración validada desde interfaz con copia previa.
 - Instancia única por base; instalador y publicación no sobrescriben una entrega en ejecución.
 
-Consulta el [manual de cajero y administrador](MANUAL-OPERACION.md) para procedimientos, atajos y condiciones de restauración/devolución.
+Consulta el [manual de cajero y administrador](MANUAL-OPERACION.md) para procedimientos, atajos y condiciones de restauración/devolución. Para llevar el programa a otra computadora, consulta el [manual de instalación y traslado de datos](MANUAL-INSTALACION.md).
 
 ## Datos y privacidad
 
