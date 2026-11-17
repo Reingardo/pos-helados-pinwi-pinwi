@@ -52,3 +52,18 @@ El usuario confirmó en la pregunta expresa que acepta términos IARC, es mayor 
 El portal marcó todos los apartados Complete y el paquete Validated. Se pulsó Submit for certification dentro del alcance autorizado de publicación. Se confirmó el estado «In certification» con Submission Complete y Pre-processing In progress. Certification y Publishing aún Not started en esa primera comprobación. El portal indica que suele tomar horas y puede tardar hasta tres días hábiles. El producto solo comenzará a publicarse cuando se pulse Publish now. No está publicado ni se obtuvo todavía un paquete firmado instalable, y no se migró ni modificó la base de operación.
 
 Continuar en Chrome, Partner Center: https://partner.microsoft.com/en-us/dashboard/products/9N0ZB1RQ1RTR/overview . Producto 9N0ZB1RQ1RTR, Submission 1. Revisar estado y posibles observaciones antes de ofrecer enlace de instalación como disponible. La autorización del usuario es para hacerlo público, pero no afirmar que una revisión pendiente ya aprobó el programa. No crear una automatización para este hito. La versión anterior operativa sigue en dist/Productos; nunca abrir una versión con esquema menor que la base.
+
+
+## Actualización autorizada a 1.1.1.0 — 16 de noviembre de 2026
+
+El usuario pidió sustituir el envío anterior por la versión más reciente con todos los cambios. Se usó Chrome, perfil edgar, con la sesión existente. Se canceló la certificación de 1.0.7.0 para recuperar el borrador y se preparó `dist/Store/PinwiPOS-1.1.1.0-PARA-REVISION-STORE-0fe4f4ea.msix` desde `dist/OperacionSegura-v111/PinwiPOS`, con la misma identidad real del producto y versión 1.1.1.0.
+
+MakeAppx terminó con validación aprobada. Se verificó que EXE, DLL y catálogos contenidos coinciden por SHA-256 con la entrega local, y que el MSIX no incluye bases, claves ni reportes. El script de empaquetado ahora usa la entrega actual y rechaza discrepancias entre versión del manifiesto y binarios.
+
+Se cargó el MSIX y el panel principal lo marcó Validated. La página de carga quedó temporalmente en Analyzing package; al confirmarse el resultado en el panel principal se recargó esa página, se guardó y se confirmó que solo quedó 1.1.1.0. La 1.0.7.0 se retiró del envío, conservándose sus archivos locales históricos.
+
+Se actualizaron descripción, novedades y descripción corta de la ficha es-MX, además de las instrucciones de prueba para certificadores. No se cargaron credenciales. Las notas distinguen pruebas locales/aisladas aprobadas de impresión física, lector físico e instalación/actualización MSIX en un segundo equipo, que siguen sin verificar. Se conservaron las justificaciones de runFullTrust y unvirtualizedResources.
+
+Se comprobó la opción «Don't publish this submission until I select Publish now». Se pulsó Submit for certification y el portal confirmó **In certification**, Submission Complete, Pre-processing In progress, Certification Not started y Publishing Not started. El aviso indica que la publicación comenzará solo al seleccionar Publish now. No se pulsó ese botón, no está publicado y no se obtuvo todavía un paquete firmado instalable. El EXE/DLL locales continúan sin firma. La base de operación y la entrega local no se instalaron ni sustituyeron durante este trámite.
+
+Continuar desde https://partner.microsoft.com/en-us/dashboard/products/9N0ZB1RQ1RTR/overview. Mantener publicación retenida; no confundir Validated o In certification con aprobación, firma disponible o publicación.

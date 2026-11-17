@@ -33,4 +33,4 @@ No equivale a una revisión manual de todas las combinaciones de formularios adm
 
 Inventario avanzado, costos, recetas, mermas, domicilio y configuración fiscal quedan fuera de esta entrega. El POS sigue vendiendo sin bloqueo de existencias, con avisos informativos. WhatsApp sigue requiriendo envío manual.
 
-Microsoft Store permanece sin cambios y con publicación retenida. No afirmar firma, certificación aprobada ni disponibilidad pública. Binarios, bases, cuentas, respaldos y evidencia de pruebas son locales e ignorados por Git.
+Por indicación posterior del usuario, Microsoft Store recibió el paquete 1.1.1.0 y se reenvió a certificación, con publicación manual retenida. No afirmar firma, certificación aprobada ni disponibilidad pública. Binarios, bases, cuentas, respaldos y evidencia de pruebas son locales e ignorados por Git.
