@@ -76,3 +76,20 @@ El usuario indicó expresamente «publicalo», reemplazando la retención manual
 Tras revisar Modify publishing time, el portal mostró «Your product will start publishing as soon as it passes certification». Se recargó la página y se confirmó que esa configuración persistía. Por tanto, la publicación comenzará automáticamente cuando Microsoft apruebe; no hace falta mantener el freno manual histórico. No se pulsó un botón Publish now habilitado ni se afirmó una publicación ya completada.
 
 Evidencia local ignorada: `artifacts/store-v111-publicacion-automatica.jpg`. La aprobación, el inicio efectivo de Publishing y la disponibilidad en Store siguen pendientes de Microsoft. No modificar ni cancelar esta autorización sin nueva indicación del usuario.
+
+## Rechazo 10.6.3 y reconsideración enviada — 19 de noviembre de 2026
+
+Se revisó el informe https://partner.microsoft.com/en-us/dashboard/products/9N0ZB1RQ1RTR/certification/reports/11691c1a-cd5c-4e35-9b8c-257cd290185c. Microsoft rechazó la capacidad restringida `unvirtualizedResources` según la información aportada. Solicitó información nueva o ampliada y un contacto de soporte o sitio del desarrollador válido en Properties > Support info. No fue un diagnóstico de firma criptográfica defectuosa. El envío volvió a In draft y ofrecía Resubmit for certification.
+
+El usuario pidió encargarse de la corrección. Se publicó `SUPPORT.md` en el repositorio público propio y se enlazó desde README. Identifica al editor EdRos, enlaza los manuales y el canal habilitado de GitHub Issues, y advierte contra publicar bases, respaldos, credenciales o transacciones. No se inventaron correo, dirección ni compromisos de atención. Se comprobó que la página era accesible públicamente.
+
+Se guardaron y comprobaron en Properties:
+
+- Website: https://github.com/Reingardo/pos-helados-pinwi-pinwi
+- Support contact info: https://github.com/Reingardo/pos-helados-pinwi-pinwi/blob/main/SUPPORT.md
+
+Se sustituyó la justificación corta de `unvirtualizedResources` por una solicitud de reconsideración nueva, dentro del límite de 500 caracteres. Se mantuvo `runFullTrust`. Las notas de certificación se ampliaron dentro de 6,000 caracteres (5,776 guardados y comprobados tras volver a abrir la página): historial autoritativo existente de la distribución local, riesgo de una vista de datos separada al virtualizar, conservación de registros y respaldos tras desinstalar, exclusión únicamente de `%LOCALAPPDATA%\PinwiPOS`, permisos normales del usuario y ausencia de exclusiones de registro o AppData general. Se describió un escenario de revisión aislado sin afirmar que la migración MSIX en segundo equipo ya estuviera verificada. Se conservaron instrucciones funcionales y límites de impresión/lector físicos. No se cargaron credenciales.
+
+Se retiró de las notas la instrucción histórica de retener la publicación, para hacerla coherente con la autorización posterior del usuario y la opción automática seleccionada. No se modificaron el manifiesto, los binarios, la carpeta de operación ni la base de datos. La reconsideración utiliza el mismo paquete `PinwiPOS-1.1.1.0-PARA-REVISION-STORE-0fe4f4ea.msix`, que seguía Validated.
+
+Se pulsó **Resubmit for certification** y se observó **In certification**, Submission Complete, Pre-processing In progress, Certification Not started y Publishing Not started. El portal confirmó nuevamente «Your product will start publishing as soon as it passes certification». La captura de comprobación está en `artifacts/store-reconsideracion-v111.jpg` (ignorada por Git). La reconsideración está enviada; la aprobación del permiso, firma descargable y disponibilidad pública siguen pendientes de Microsoft. Continuar desde https://partner.microsoft.com/en-us/dashboard/products/9N0ZB1RQ1RTR/overview sin cancelar ni cambiar la publicación automática.

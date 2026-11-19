@@ -1,6 +1,6 @@
 # POS de Helados Pinwi Pinwi
 
-## Estado vigente — 16 de noviembre de 2026
+## Estado vigente — 19 de noviembre de 2026
 
 **Entrega posterior: Operación Segura 1.1.1.0, SQLite v8.** Esta actualización prevalece sobre las referencias v7 y ProductosCobroRapido inferiores. Leer `ESTADO-OPERACION-V8.md` y `MANUAL-OPERACION.md`.
 
@@ -9,7 +9,7 @@
 - Respaldos: 288 recientes, 30 diarios y 12 semanales, con destino adicional configurable. Cajero consulta/exporta sus propias operaciones; cambios sensibles requieren autorización en la lógica. Fotos y reglas de venta se conservan.
 - Las pruebas nuevas usan bases temporales y verifican restauración real aislada, pagos mixtos/devoluciones por centavos, rollback, caja, roles, reportes superiores a 1,000 operaciones y fallo de copia externa. Revisión interactiva aislada de venta/cobro/ticket/reportes y renders administrativos. No afirmar una revisión manual de todas las combinaciones ni impresión física verificada.
 - Continúan pendientes impresión/lector físicos, instalación en segundo equipo limpio desconectado, inventario avanzado, domicilio y configuración fiscal. No cambiar seguridad del equipo.
-- Decisión posterior del usuario: tras actualizar Store a **1.1.1.0**, indicó expresamente «publicalo». El portal confirmó, incluso después de recargar, «Your product will start publishing as soon as it passes certification». La publicación ahora es AUTOMÁTICA tras aprobación, reemplazando la retención manual histórica. Certificación sigue In progress y Publishing Not started; no afirmar aprobación, disponibilidad pública ni firma descargable todavía. No cancelar ni cambiar esta configuración sin indicación del usuario. Consultar el último apartado de DISTRIBUCION-STORE.md.
+- Decisión posterior del usuario: tras actualizar Store a **1.1.1.0**, indicó expresamente «publicalo». La publicación es AUTOMÁTICA tras aprobación, reemplazando la retención manual histórica. El 19 de noviembre Microsoft rechazó `unvirtualizedResources` por justificación insuficiente y falta de soporte público (10.6.3). El usuario autorizó corregirlo: se publicó `SUPPORT.md`, se guardaron sus enlaces en Properties, se amplió la justificación y se reenvió el mismo paquete 1.1.1.0. El portal confirmó **In certification**, Submission Complete, Pre-processing In progress, Certification/Publishing Not started y publicación automática al aprobar. No afirmar aprobación, disponibilidad pública ni firma descargable todavía. No cancelar ni cambiar esta configuración sin indicación del usuario. Consultar el último apartado de DISTRIBUCION-STORE.md.
 
 ### Estado anterior de ProductosCobroRapido (histórico)
 
