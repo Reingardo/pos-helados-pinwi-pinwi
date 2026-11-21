@@ -1,6 +1,7 @@
 using Pinwi.Pos;
 System.Globalization.CultureInfo.DefaultThreadCurrentCulture=System.Globalization.CultureInfo.GetCultureInfo("es-MX");
 System.Windows.FrameworkElement.LanguageProperty.OverrideMetadata(typeof(System.Windows.FrameworkElement),new System.Windows.FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage("es-MX")));
+if(args.Contains("--docs")){DocumentationScreenshots.Run();return;}
 if(args.Contains("--render"))
 {
  var thread=new Thread(()=>{
