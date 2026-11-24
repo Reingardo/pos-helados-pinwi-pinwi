@@ -95,7 +95,7 @@ public sealed partial class Store
   lock(backupGate)
   {
    if(Path.GetFullPath(path).Equals(Path.GetFullPath(DatabasePath),StringComparison.OrdinalIgnoreCase))throw new Exception("Elige un archivo diferente a la base activa.");
-   using var c=Open();using var dest=new SqliteConnection(new SqliteConnectionStringBuilder{DataSource=path}.ToString());dest.Open();c.BackupDatabase(dest);
+   using var c=Open();using var dest=new SqliteConnection(new SqliteConnectionStringBuilder{DataSource=path,Pooling=false}.ToString());dest.Open();c.BackupDatabase(dest);
   }
  }
 }

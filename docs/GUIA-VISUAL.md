@@ -1,6 +1,6 @@
 # Así funciona Helados Pinwi Pinwi POS
 
-Esta guía explica la versión **1.1.1.0** en palabras sencillas. El programa funciona en **Windows de 64 bits** y permite vender sin internet. Cada computadora conserva sus propios datos; no hay sincronización entre equipos.
+Esta guía explica la entrega local **1.1.1.0** en palabras sencillas. El programa funciona en **Windows de 64 bits** y permite vender sin internet. Cada computadora conserva sus propios datos; no hay sincronización entre equipos. La edición Store **1.1.2.0** en preparación cambia la ubicación de sus datos y añade una bienvenida para importar un respaldo: consulta el [traslado entre ediciones](../MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado).
 
 Las imágenes son capturas de las vistas reales del programa, generadas en un entorno separado con el catálogo inicial. No contienen cuentas, contraseñas ni operaciones guardadas. Los carritos e importes mostrados son ejemplos sin confirmar. No son fotografías de un negocio en operación. Las imágenes de productos mantienen la [procedencia registrada en el proyecto](../src/Pinwi.Pos/Assets/image-sources.json); algunas son generadas y no deben interpretarse como fotografías reales de cada sabor.
 

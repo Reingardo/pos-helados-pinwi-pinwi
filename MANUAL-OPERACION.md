@@ -11,6 +11,8 @@ Aplicación local para Windows x64. La venta y los respaldos no necesitan intern
 
 Los datos viven en `%LOCALAPPDATA%/PinwiPOS`, separados del programa. No copies únicamente el EXE ni reemplaces la carpeta de datos al actualizar.
 
+La edición Microsoft Store 1.1.2.0 usa una carpeta distinta, `%USERPROFILE%\PinwiPOS-Store`. Al primer inicio ofrece traer un respaldo validado o comenzar una instalación independiente. No toma ni modifica automáticamente los datos de la entrega local. Para cambiar de edición, sigue el [procedimiento de traslado](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). La preparación de esa edición no significa que Store ya la haya aprobado.
+
 ## Vender
 
 Abre caja con el fondo inicial. En **Productos** elige gama y sabor, o usa **Cobro rápido** para registrar solo la gama. Ajusta piezas con +, − o captura la cantidad y pulsa Enter. El lector de códigos debe funcionar como teclado y terminar con Enter en la búsqueda.

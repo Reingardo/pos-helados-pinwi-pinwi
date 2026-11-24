@@ -35,6 +35,8 @@ Desarrollado con C# / .NET 10, WPF y SQLite. Repositorio independiente: https://
 
 **Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. La última revisión de Store registrada, el 19 de noviembre de 2026, confirmó el reenvío de 1.1.1.0 a certificación. Por autorización del usuario, comenzará a publicarse automáticamente cuando Microsoft la apruebe; todavía no se confirma disponibilidad pública.
 
+**Corrección de Store en preparación — 23 de noviembre de 2026:** Microsoft volvió a rechazar el permiso `unvirtualizedResources`. El código 1.1.2.0 retira ese permiso y la exclusión de AppData. La edición empaquetada usa `%USERPROFILE%\PinwiPOS-Store` y ofrece importar un respaldo validado en el primer inicio; la entrega local y sus datos conservan su carpeta actual. Consulta el [procedimiento de traslado entre ediciones](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). No se confirma aprobación ni firma disponible.
+
 ## Abrir o actualizar
 
 Cierra la versión anterior y abre `dist/OperacionSegura-v111/PinwiPOS/Pinwi.Pos.exe`. El ZIP es `dist/PinwiPOS-OperacionSegura-v111.zip`; extrae todo su contenido. `Instalar.ps1` instala por usuario y crea el acceso de escritorio. El paquete es Windows x64 self-contained y no necesita descargar .NET para operar.
