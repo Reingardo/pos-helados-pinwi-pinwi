@@ -28,7 +28,7 @@ Las incidencias son públicas. No adjuntes bases de datos, respaldos, usuarios, 
 3. Revisa el procedimiento de respaldo y restauración del manual. La restauración reemplaza el estado de destino y requiere autorización.
 4. Describe el problema en el canal de soporte sin subir el archivo de base ni el respaldo.
 
-La versión local conserva sus datos en `%LOCALAPPDATA%\PinwiPOS`, separados de la instalación. El paquete MSIX solicita excluir únicamente esa carpeta de la virtualización para que una actualización desde la versión local acceda a los mismos registros y se conserven fuera del paquete.
+La entrega local 1.1.1.0 conserva sus datos en `%LOCALAPPDATA%\PinwiPOS`, separados de la instalación. La edición de Store 1.1.2.0 usa `%USERPROFILE%\PinwiPOS-Store`, fuera de AppData, sin solicitar exclusiones de virtualización. Son bases independientes: en el primer inicio de Store puedes importar un respaldo validado creado desde la versión local. El origen se conserva; no hay traslado automático ni fusión de operaciones. Cierra la versión anterior y deja de vender en ella después del traspaso definitivo.
 
 ## Alcance
 

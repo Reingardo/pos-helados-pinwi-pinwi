@@ -17,7 +17,7 @@ if(args.Contains("--render"))
   ((System.Windows.Controls.Button)payment.FindName("CashMethod")).RaiseEvent(new System.Windows.RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));input.Text="500";
   var receipt=new ReceiptWindow("HELADOS PINWI PINWI\n833 393 2616\nFolio 000001 · Vista de ejemplo\nCajero: Ana\n\nPaleta de leche — Fresa\n10 × $20.00 Mayoreo  $200.00\nPaleta artesanal — Gansito\n10 × $22.00 Mayoreo  $220.00\nPinwi de agua — Limón\n10 × $5.00 Mayoreo  $50.00\n\nTOTAL: $470.00\nEfectivo recibido: $500.00\nCambio: $30.00\n\n¡Gracias por tu compra!\nComprobante de venta");
   void Render(System.Windows.Window w,string name,bool close=true){w.Show();w.Dispatcher.Invoke(()=>{},System.Windows.Threading.DispatcherPriority.ApplicationIdle);w.UpdateLayout();var bmp=new System.Windows.Media.Imaging.RenderTargetBitmap((int)w.ActualWidth,(int)w.ActualHeight,96,96,System.Windows.Media.PixelFormats.Pbgra32);bmp.Render(w);var encoder=new System.Windows.Media.Imaging.PngBitmapEncoder();encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bmp));using var stream=System.IO.File.Create(System.IO.Path.Combine(output,name));encoder.Save(stream);if(close)w.Close();}
-  Render(payment,"cobro.png");Render(receipt,"ticket.png");
+  Render(payment,"cobro.png");Render(receipt,"ticket.png");Render(new StoreWelcomeWindow(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiWelcomePreview")),"store-bienvenida.png");
   var doc=ReceiptBuilder.Create("TOTAL: $470.00\nCambio: $30.00",219);if(doc.PageWidth!=219)throw new Exception("Ancho 58 mm incorrecto");
   var previewStore=new Store(System.IO.Path.Combine(System.IO.Path.GetTempPath(),"PinwiPreview",Guid.NewGuid().ToString("N")));var previewPassword=Guid.NewGuid().ToString();previewStore.CreateAdmin("Ana",previewPassword);previewStore.SignIn(previewPassword);previewStore.OpenShift(10000);
   var sampleCart=new List<CartItem>{new(previewStore.Products().First(x=>x.Id==42),10),new(previewStore.Products().First(x=>x.Id==51),10),new(previewStore.Products().First(x=>x.Id==1),10)};
@@ -209,3 +209,4 @@ Check("Umbral global exacto con varias gamas",35000,[new(lemon,5),new(pineapple,
 Check("Al quitar consumo conserva solo gama con diez",7700,[new(lemon,5),new(pineapple,5),new(quickPaletas with{Retail=2700,Wholesale=2500},1)]);
 Console.WriteLine("OK recálculo por gama al quitar cantidades y al bajar del umbral global");
 ImprovementsTests.Run();
+StoreDistributionTests.Run();

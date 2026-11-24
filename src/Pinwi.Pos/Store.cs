@@ -16,7 +16,7 @@ public sealed partial class Store
  static SqliteCommand Cmd(SqliteConnection c,string sql, params object[] values) { var q=c.CreateCommand(); q.CommandText=sql; for(var i=0;i<values.Length;i++) q.Parameters.AddWithValue("@p"+i,values[i]); return q; }
  public Store(string? directory=null)
  {
-  DirectoryPath=directory ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"PinwiPOS");
+  DirectoryPath=directory ?? DataLocation.DefaultDirectory;
   Directory.CreateDirectory(DirectoryPath);
   using var c=Open();
   var version=Convert.ToInt32(Cmd(c,"PRAGMA user_version").ExecuteScalar());

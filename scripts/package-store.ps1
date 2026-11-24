@@ -3,7 +3,7 @@ param(
  [string]$IdentityName,
  [string]$Publisher,
  [string]$PublisherDisplayName,
- [version]$Version='1.1.1.0',
+ [version]$Version='1.1.2.0',
  [string]$SourceDirectory,
  [string]$MakeAppxPath,
  [switch]$Preview
@@ -14,7 +14,7 @@ if($Preview){$IdentityName='PinwiPOS.Preview';$Publisher='CN=PinwiPOSPreview';$P
 if(!$IdentityName -or !$Publisher -or !$PublisherDisplayName){throw 'Copia Identity Name, Publisher y PublisherDisplayName de Identidad del producto en Partner Center, o usa -Preview para validar un borrador local.'}
 if($IdentityName -notmatch '^[A-Za-z0-9.-]{3,50}$'){throw 'Identity Name debe coincidir con Partner Center y tener entre 3 y 50 caracteres.'}
 if($Version.Revision -ne 0){throw 'La versión para Store debe tener cuatro partes y terminar en .0.'}
-if(!$SourceDirectory){$SourceDirectory=Join-Path $repo 'dist\OperacionSegura-v111\PinwiPOS'}
+if(!$SourceDirectory){$SourceDirectory=Join-Path $repo 'dist\Store-v112\PinwiPOS'}
 $source=(Resolve-Path -LiteralPath $SourceDirectory).Path
 foreach($required in @('Pinwi.Pos.exe','Pinwi.Pos.dll','coreclr.dll','catalog.json','packages.json')){if(!(Test-Path -LiteralPath (Join-Path $source $required))){throw "Publicación incompleta: falta $required"}}
 $private=Get-ChildItem -LiteralPath $source -Recurse -File | Where-Object {$_.Extension -in '.db','.db-wal','.db-shm','.sqlite','.sqlite3','.pfx','.p12','.key','.env','.csv','.log' -or $_.Name -like '.env.*'}

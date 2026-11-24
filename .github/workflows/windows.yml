@@ -32,6 +32,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Publish self-contained Windows app
         run: dotnet publish src/Pinwi.Pos -c Release -r win-x64 --self-contained true -o dist/ci/PinwiPOS
+      - name: Render desktop views in an isolated environment
+        run: dotnet run --project tests/Pinwi.Tests -c Release --no-build -- --render
       - name: Include installer and instructions
         shell: pwsh
         run: |
@@ -52,3 +54,9 @@ jobs:
           name: test-results
           path: artifacts/test-results.txt
           if-no-files-found: ignore
+      - name: Upload first-use Store preview only (no accounts or transactions)
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: PinwiPOS-Store-first-use-preview
+          path: artifacts/previews/store-bienvenida.png
+          if-no-files-found: error
