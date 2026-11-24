@@ -2,6 +2,16 @@
 
 Un punto de venta para elegir productos, cobrar, llevar la caja y consultar lo vendido en **Helados Pinwi Pinwi**. Funciona en Windows sin necesitar internet para vender y guarda la información en la computadora del negocio.
 
+## Descargar e instalar — versión 1.1.2.0
+
+**[Instalar desde Microsoft Store](https://apps.microsoft.com/detail/9N0ZB1RQ1RTR)** — opción recomendada. Abre el enlace en la PC de destino, pulsa **Obtener / Instalar** y abre el POS. Partner Center confirmó **In Microsoft Store** el 23 de noviembre de 2026.
+
+**[Descargar ZIP completo para Windows x64](https://github.com/Reingardo/pos-helados-pinwi-pinwi/releases/download/v1.1.2.0/PinwiPOS-1.1.2.0-Windows-x64.zip)** · **[Ver la publicación y sus archivos](https://github.com/Reingardo/pos-helados-pinwi-pinwi/releases/tag/v1.1.2.0)**
+
+El ZIP incluye el programa, .NET, SQLite, imágenes, instalador opcional y manuales; no contiene cuentas ni operaciones. Extrae todo y abre `PinwiPOS/Pinwi.Pos.exe`. Es una entrega local **sin firma**, que Windows puede bloquear; en ese caso utiliza Microsoft Store. No cambies las protecciones del equipo.
+
+**Si ya usabas el POS:** crea un respaldo antes de actualizar. Store guarda sus datos por separado: elige **Traer un respaldo del POS** en su primer inicio. Para una PC independiente, elige **Comenzar una instalación independiente**. Consulta el **[manual de instalación y traslado paso a paso](MANUAL-INSTALACION.md)**. Cada PC trabaja con sus propios datos; no hay sincronización.
+
 ![Pantalla de venta del POS con categorías e imágenes del catálogo](docs/imagenes/01-inicio.png)
 
 *Interfaz de la versión 1.1.1.0. Las capturas se generan con el catálogo inicial en un entorno separado, sin cuentas ni operaciones guardadas. No muestran datos del negocio.*
@@ -27,19 +37,19 @@ Un punto de venta para elegir productos, cobrar, llevar la caja y consultar lo v
 | Revisar procedimientos y autorizaciones | [Manual de cajero y administrador](MANUAL-OPERACION.md) |
 | Informar de un problema | [Soporte técnico](SUPPORT.md) |
 
-El repositorio contiene código y recursos para reconstruir la aplicación; **no incluye el ZIP ni el ejecutable listos para descargar**. El paquete local se entrega por separado. La distribución por Microsoft Store sigue pendiente de aprobación en la última comprobación registrada.
+El repositorio contiene código y recursos. El programa listo para usar se descarga desde **Releases** o **Microsoft Store**, mediante los enlaces anteriores.
 
 Desarrollado con C# / .NET 10, WPF y SQLite. Repositorio independiente: https://github.com/Reingardo/pos-helados-pinwi-pinwi.
 
 **Soporte técnico del producto:** [página de soporte y canal de contacto](SUPPORT.md).
 
-**Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. La revisión de Store del 23 de noviembre de 2026 confirmó el envío de la corrección **1.1.2.0** a certificación. Por autorización del usuario, comenzará a publicarse automáticamente cuando Microsoft la apruebe; todavía no se confirma disponibilidad pública.
+**Versión actual: 1.1.2.0, base v8.** Consulta el [estado de validación](ESTADO-OPERACION-V8.md) para conocer las pruebas y los pendientes.
 
-**Corrección de Store enviada — 23 de noviembre de 2026:** Microsoft volvió a rechazar el permiso `unvirtualizedResources`. La 1.1.2.0 retira ese permiso y la exclusión de AppData. La edición empaquetada usa `%USERPROFILE%\PinwiPOS-Store` y ofrece importar un respaldo validado en el primer inicio; la entrega local y sus datos conservan su carpeta actual. Pasaron las [pruebas de Windows](https://github.com/Reingardo/pos-helados-pinwi-pinwi/actions/runs/45305436247), y el portal confirmó **In certification** con solo 1.1.2.0 en el envío. Consulta el [procedimiento de traslado entre ediciones](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). No se confirma aprobación ni firma disponible.
+**Corrección de Store publicada — 23 de noviembre de 2026:** se retiraron `unvirtualizedResources` y las exclusiones de AppData. Store usa `%USERPROFILE%\PinwiPOS-Store` y ofrece importar un respaldo validado en el primer inicio. La edición local conserva su carpeta. Pasaron las [pruebas de Windows](https://github.com/Reingardo/pos-helados-pinwi-pinwi/actions/runs/45305436247); el panel confirmó **In Microsoft Store** y disponibilidad del producto. Consulta el [procedimiento de traslado](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado).
 
 ## Abrir o actualizar
 
-Cierra la versión anterior y abre `dist/OperacionSegura-v111/PinwiPOS/Pinwi.Pos.exe`. El ZIP es `dist/PinwiPOS-OperacionSegura-v111.zip`; extrae todo su contenido. `Instalar.ps1` instala por usuario y crea el acceso de escritorio. El paquete es Windows x64 self-contained y no necesita descargar .NET para operar.
+Cierra la versión anterior y descarga la 1.1.2.0 desde los enlaces de arriba. En la opción ZIP, extrae todo y abre `PinwiPOS/Pinwi.Pos.exe`. `Instalar.ps1` instala por usuario y crea el acceso de escritorio. Incluye el runtime .NET y SQLite.
 
 La apertura migra a v8 con respaldo previo. Los datos están en `%LOCALAPPDATA%/PinwiPOS`, separados del programa. No abras entregas anteriores sobre la base migrada. No borres ni reviertas datos para resolver errores. El paquete local sigue sin firma; no se cambian protecciones de Windows.
 

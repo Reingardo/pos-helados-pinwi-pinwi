@@ -42,3 +42,16 @@ Tras el segundo rechazo de unvirtualizedResources, se retiraron ese permiso y la
 El CI Windows 45305436247 (commit 86308b4) pasó compilación, reglas anteriores, pruebas de importación inicial con preservación de historial/fotos/cuentas/roles/configuración/pendientes, rechazo sin reemplazo, reintento y migración aislada v7. También generó renders WPF, incluida la bienvenida. Se corrigió la liberación del archivo de respaldo al cerrar la conexión de destino. La prueba local había sido bloqueada por Windows; no se alteraron protecciones ni se eludió el bloqueo.
 
 MakeAppx validó el MSIX 1.1.2.0 y se comprobaron su contenido y versiones. Partner Center recibió y validó el paquete corregido, se retiró 1.1.1.0 del envío, y Submission Options mostró solo runFullTrust. Tras guardar ficha, soporte, privacidad y notas, se envió a certificación. Resultado observado: **In certification**, Submission Complete, Pre-processing In progress, Certification/Publishing Not started y publicación automática tras aprobación. Firma descargable y disponibilidad pública siguen pendientes. La instalación MSIX firmada en un segundo equipo limpio, el flujo interactivo completo de bienvenida y los periféricos físicos no se presentan como verificados.
+
+## Publicado y descarga 1.1.2.0 — 23 de noviembre de 2026
+
+Este estado prevalece sobre los apartados históricos de certificación pendiente. Partner Center mostró **In Microsoft Store**, ficha de Store de solo lectura y el mensaje de que el producto está disponible según su configuración de descubrimiento. El enlace **View Product on Store** apuntaba al producto `9N0ZB1RQ1RTR`.
+
+- Instalación oficial: https://apps.microsoft.com/detail/9N0ZB1RQ1RTR
+- Publicación de GitHub: https://github.com/Reingardo/pos-helados-pinwi-pinwi/releases/tag/v1.1.2.0
+- ZIP local completo sin firma: https://github.com/Reingardo/pos-helados-pinwi-pinwi/releases/download/v1.1.2.0/PinwiPOS-1.1.2.0-Windows-x64.zip
+- Manual actualizado: `MANUAL-INSTALACION.md`; incluye PC independiente, traslado por respaldo y diferencias de carpetas Store/local.
+
+El ZIP reutiliza la publicación self-contained 1.1.2.0 del código que pasó CI Windows 45305436247 (86308b4), con instalador y manuales actualizados. Los binarios se distribuyen como assets de Releases, no se incorporan al historial Git. No incluye cuentas, bases, respaldos ni operaciones. La publicación de Store no convierte el ZIP local en un binario firmado.
+
+La entrega operativa 1.1.1.0 y sus datos no se sobrescribieron. No se instaló Store ni se migró la base del negocio al publicar estos archivos. Continúan pendientes la instalación completa en un segundo equipo limpio desconectado, impresión y lector físicos. No cambiar protecciones de Windows. Usar Store ante bloqueos del ZIP.

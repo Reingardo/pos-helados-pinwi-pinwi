@@ -1,4 +1,4 @@
-﻿param([ValidatePattern('^[A-Za-z0-9_-]+$')][string]$Delivery = 'OperacionSegura-v111')
+﻿param([ValidatePattern('^[A-Za-z0-9_-]+$')][string]$Delivery = 'OperacionSegura-v112')
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
 $dotnet = Join-Path $env:LOCALAPPDATA 'Microsoft\dotnet\dotnet.exe'

@@ -11,7 +11,7 @@ Aplicación local para Windows x64. La venta y los respaldos no necesitan intern
 
 Los datos viven en `%LOCALAPPDATA%/PinwiPOS`, separados del programa. No copies únicamente el EXE ni reemplaces la carpeta de datos al actualizar.
 
-La edición Microsoft Store 1.1.2.0 usa una carpeta distinta, `%USERPROFILE%\PinwiPOS-Store`. Al primer inicio ofrece traer un respaldo validado o comenzar una instalación independiente. No toma ni modifica automáticamente los datos de la entrega local. Para cambiar de edición, sigue el [procedimiento de traslado](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). Su envío a certificación no significa que Store ya la haya aprobado.
+La edición Microsoft Store 1.1.2.0 usa una carpeta distinta, `%USERPROFILE%\PinwiPOS-Store`. Al primer inicio ofrece traer un respaldo validado o comenzar una instalación independiente. No toma ni modifica automáticamente los datos de la entrega local. Para cambiar de edición, sigue el [procedimiento de traslado](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). Store ya está publicado: [instalación oficial](https://apps.microsoft.com/detail/9N0ZB1RQ1RTR). El ZIP local continúa sin firma.
 
 ## Vender
 
