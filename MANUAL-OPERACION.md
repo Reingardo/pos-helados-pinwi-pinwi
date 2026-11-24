@@ -11,7 +11,7 @@ Aplicación local para Windows x64. La venta y los respaldos no necesitan intern
 
 Los datos viven en `%LOCALAPPDATA%/PinwiPOS`, separados del programa. No copies únicamente el EXE ni reemplaces la carpeta de datos al actualizar.
 
-La edición Microsoft Store 1.1.2.0 usa una carpeta distinta, `%USERPROFILE%\PinwiPOS-Store`. Al primer inicio ofrece traer un respaldo validado o comenzar una instalación independiente. No toma ni modifica automáticamente los datos de la entrega local. Para cambiar de edición, sigue el [procedimiento de traslado](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). La preparación de esa edición no significa que Store ya la haya aprobado.
+La edición Microsoft Store 1.1.2.0 usa una carpeta distinta, `%USERPROFILE%\PinwiPOS-Store`. Al primer inicio ofrece traer un respaldo validado o comenzar una instalación independiente. No toma ni modifica automáticamente los datos de la entrega local. Para cambiar de edición, sigue el [procedimiento de traslado](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). Su envío a certificación no significa que Store ya la haya aprobado.
 
 ## Vender
 
@@ -71,4 +71,4 @@ Al terminar, el programa se cierra. Ábrelo de nuevo e inicia sesión con una cu
 
 WhatsApp prepara una nota para envío manual con internet; no hay envío desatendido ni confirmación remota de entrega. Resultado de ventas menos gastos no significa utilidad contable.
 
-La impresión física de 58/80 mm y la instalación completa en un segundo equipo limpio desconectado siguen pendientes. También quedan inventario avanzado con recetas, costos/mermas y pedidos a domicilio. La distribución local sigue sin firma. La última revisión registrada de Store, el 19 de noviembre de 2026, confirmó el reenvío a certificación de 1.1.1.0 y publicación automática tras aprobación; no demuestra aprobación ni disponibilidad pública.
+La impresión física de 58/80 mm y la instalación completa en un segundo equipo limpio desconectado siguen pendientes. También quedan inventario avanzado con recetas, costos/mermas y pedidos a domicilio. La distribución local sigue sin firma. La última revisión registrada de Store, el 23 de noviembre de 2026, confirmó el envío a certificación de la corrección 1.1.2.0 y publicación automática tras aprobación; no demuestra aprobación ni disponibilidad pública.

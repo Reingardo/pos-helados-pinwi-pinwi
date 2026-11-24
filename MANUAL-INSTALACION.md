@@ -83,10 +83,11 @@ La venta y consulta local no requieren internet. WhatsApp sí requiere internet 
 - **Dice que la base necesita una versión más reciente:** cierra el programa y usa una entrega compatible; no borres ni reviertas la base.
 - **Hay otra instancia abierta:** utiliza la ventana existente o ciérrala antes de cambiar de versión.
 - **No imprime:** la venta permanece guardada; revisa impresora, papel y controlador y reimprime desde Historial.
+- **No aparece firma o Windows lo bloquea:** esa PC puede requerir una distribución firmada; la instalación en esta computadora no garantiza autorización en otra.
 
 ## Edición Microsoft Store 1.1.2.0: primer inicio y traslado
 
-La 1.1.2.0 se prepara para resolver el rechazo de un permiso de Store; su preparación no equivale a aprobación o disponibilidad pública. El ZIP local descrito arriba sigue siendo la entrega 1.1.1.0. No hace falta reemplazarla para preparar el envío.
+La corrección 1.1.2.0 se envió a certificación el 23 de noviembre de 2026 para resolver el rechazo de un permiso de Store. El portal confirmó **In certification** y publicación automática tras aprobación; no equivale a firma disponible ni disponibilidad pública. El ZIP local descrito arriba sigue siendo la entrega 1.1.1.0 y no se sustituyó al preparar este envío.
 
 La edición de Store guarda su base, fotos y respaldos en `%USERPROFILE%\PinwiPOS-Store`, fuera de AppData. La edición local conserva `%LOCALAPPDATA%\PinwiPOS`. **Son instalaciones independientes:** no comparten ni sincronizan ventas automáticamente. No borres ninguna carpeta para cambiar de edición.
 
@@ -102,6 +103,5 @@ Si deseas una instalación separada, elige **Comenzar una instalación independi
 La importación inicial rechaza bases corruptas, versiones futuras y copias sin administrador recuperable. Un fallo no modifica el origen ni publica una base parcial y permite reintentar. Si ya existe una base en la edición de Store, se usa la restauración habitual con autorización y copia previa; la importación inicial no permite sustituirla.
 
 La importación lleva el estado incluido en esa copia, no el archivo de cortes exportados ni la colección de respaldos anterior. Conserva esos archivos aparte. Las nuevas copias automáticas se crean en la carpeta de Store; conserva respaldos externos. No se ha verificado todavía una instalación/actualización MSIX firmada en un segundo equipo limpio ni la impresión física.
-- **No aparece firma o Windows lo bloquea:** esa PC puede requerir una distribución firmada; la instalación en esta computadora no garantiza autorización en otra.
 
-Ubicación de datos: `%LOCALAPPDATA%\PinwiPOS`. Incluye la base y sus respaldos. Esta guía no sustituye el manual de operación; tampoco confirma que la versión de Microsoft Store ya esté aprobada o disponible.
+Ubicación de datos de la entrega local: `%LOCALAPPDATA%\PinwiPOS`. En la edición Store 1.1.2.0: `%USERPROFILE%\PinwiPOS-Store`. Cada carpeta incluye su propia base y respaldos. Esta guía no sustituye el manual de operación; tampoco confirma que la versión de Microsoft Store ya esté aprobada o disponible.

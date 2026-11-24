@@ -33,9 +33,9 @@ Desarrollado con C# / .NET 10, WPF y SQLite. Repositorio independiente: https://
 
 **Soporte técnico del producto:** [página de soporte y canal de contacto](SUPPORT.md).
 
-**Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. La última revisión de Store registrada, el 19 de noviembre de 2026, confirmó el reenvío de 1.1.1.0 a certificación. Por autorización del usuario, comenzará a publicarse automáticamente cuando Microsoft la apruebe; todavía no se confirma disponibilidad pública.
+**Entrega local actual: Operación Segura 1.1.1.0, base v8.** Lee [AGENTS.md](AGENTS.md) y el [estado de validación](ESTADO-OPERACION-V8.md) antes de continuar. La revisión de Store del 23 de noviembre de 2026 confirmó el envío de la corrección **1.1.2.0** a certificación. Por autorización del usuario, comenzará a publicarse automáticamente cuando Microsoft la apruebe; todavía no se confirma disponibilidad pública.
 
-**Corrección de Store en preparación — 23 de noviembre de 2026:** Microsoft volvió a rechazar el permiso `unvirtualizedResources`. El código 1.1.2.0 retira ese permiso y la exclusión de AppData. La edición empaquetada usa `%USERPROFILE%\PinwiPOS-Store` y ofrece importar un respaldo validado en el primer inicio; la entrega local y sus datos conservan su carpeta actual. Consulta el [procedimiento de traslado entre ediciones](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). No se confirma aprobación ni firma disponible.
+**Corrección de Store enviada — 23 de noviembre de 2026:** Microsoft volvió a rechazar el permiso `unvirtualizedResources`. La 1.1.2.0 retira ese permiso y la exclusión de AppData. La edición empaquetada usa `%USERPROFILE%\PinwiPOS-Store` y ofrece importar un respaldo validado en el primer inicio; la entrega local y sus datos conservan su carpeta actual. Pasaron las [pruebas de Windows](https://github.com/Reingardo/pos-helados-pinwi-pinwi/actions/runs/45305436247), y el portal confirmó **In certification** con solo 1.1.2.0 en el envío. Consulta el [procedimiento de traslado entre ediciones](MANUAL-INSTALACION.md#edición-microsoft-store-1120-primer-inicio-y-traslado). No se confirma aprobación ni firma disponible.
 
 ## Abrir o actualizar
 

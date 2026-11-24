@@ -34,3 +34,11 @@ No equivale a una revisión manual de todas las combinaciones de formularios adm
 Inventario avanzado, costos, recetas, mermas, domicilio y configuración fiscal quedan fuera de esta entrega. El POS sigue vendiendo sin bloqueo de existencias, con avisos informativos. WhatsApp sigue requiriendo envío manual.
 
 Por indicación posterior del usuario, Microsoft Store recibió el paquete 1.1.1.0 y se reenvió a certificación. Luego autorizó publicarlo: el portal confirma publicación automática tras aprobación. Todavía no hay disponibilidad pública confirmada. No afirmar firma, certificación aprobada ni disponibilidad pública. Binarios, bases, cuentas, respaldos y evidencia de pruebas son locales e ignorados por Git.
+
+## Corrección de distribución 1.1.2.0 — 23 de noviembre de 2026
+
+Tras el segundo rechazo de unvirtualizedResources, se retiraron ese permiso y la exclusión de AppData. La edición Store 1.1.2.0 usa `%USERPROFILE%\PinwiPOS-Store` y una bienvenida para importar un respaldo validado o empezar independiente. La entrega local 1.1.1.0 y su base no se sustituyeron. El esquema sigue siendo v8. Se documentó el traslado en MANUAL-INSTALACION.md.
+
+El CI Windows 45305436247 (commit 86308b4) pasó compilación, reglas anteriores, pruebas de importación inicial con preservación de historial/fotos/cuentas/roles/configuración/pendientes, rechazo sin reemplazo, reintento y migración aislada v7. También generó renders WPF, incluida la bienvenida. Se corrigió la liberación del archivo de respaldo al cerrar la conexión de destino. La prueba local había sido bloqueada por Windows; no se alteraron protecciones ni se eludió el bloqueo.
+
+MakeAppx validó el MSIX 1.1.2.0 y se comprobaron su contenido y versiones. Partner Center recibió y validó el paquete corregido, se retiró 1.1.1.0 del envío, y Submission Options mostró solo runFullTrust. Tras guardar ficha, soporte, privacidad y notas, se envió a certificación. Resultado observado: **In certification**, Submission Complete, Pre-processing In progress, Certification/Publishing Not started y publicación automática tras aprobación. Firma descargable y disponibilidad pública siguen pendientes. La instalación MSIX firmada en un segundo equipo limpio, el flujo interactivo completo de bienvenida y los periféricos físicos no se presentan como verificados.
